@@ -204,9 +204,27 @@
             text-overflow: ellipsis;
             cursor: help;
         }
+        .timer-inputs-edit {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .timer-edit-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .timer-edit-group .timer-inputs {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-top: 4px;
+        }
         .timer-inputs input, .inline-edit-inputs input {
-            width: 70px;
-            font-size: 2.2rem;
+            width: 55px;
+            font-size: 1.6rem;
             text-align: center;
             font-family: monospace;
             border: 1px solid #bdc3c7;
@@ -214,7 +232,7 @@
             padding: 2px;
         }
         .timer-inputs span {
-            font-size: 2rem;
+            font-size: 1.4rem;
             color: #7f8c8d;
         }
         .timer-btn {
@@ -410,6 +428,26 @@
 
         .history-header h2 { margin: 0; color: var(--dark-blue); font-size: 1.4rem; }
 
+        .history-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .add-record-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .add-record-btn:hover { opacity: 0.9; }
+
         .btn-log {
             background-color: var(--success);
             color: white;
@@ -510,10 +548,23 @@
             </div>
             <div id="session-status-label" style="font-size: 0.85rem; font-weight: bold; color: #7f8c8d; margin-bottom: 10px;">Sessione non avviata</div>
 
-            <div class="timer-display timer-inputs" id="timer-input-container" style="display: none;">
-                <input type="number" id="edit-hours" min="0" max="99" placeholder="HH"><span>:</span>
-                <input type="number" id="edit-minutes" min="0" max="59" placeholder="MM"><span>:</span>
-                <input type="number" id="edit-seconds" min="0" max="59" placeholder="SS">
+            <div class="timer-inputs-edit" id="timer-input-container" style="display: none;">
+                <div class="timer-edit-group">
+                    <span class="timer-label">Studio</span>
+                    <div class="timer-inputs">
+                        <input type="number" id="edit-hours" min="0" max="99" placeholder="HH"><span>:</span>
+                        <input type="number" id="edit-minutes" min="0" max="59" placeholder="MM"><span>:</span>
+                        <input type="number" id="edit-seconds" min="0" max="59" placeholder="SS">
+                    </div>
+                </div>
+                <div class="timer-edit-group">
+                    <span class="timer-label">Pausa</span>
+                    <div class="timer-inputs">
+                        <input type="number" id="edit-pause-hours" min="0" max="99" placeholder="HH"><span>:</span>
+                        <input type="number" id="edit-pause-minutes" min="0" max="59" placeholder="MM"><span>:</span>
+                        <input type="number" id="edit-pause-seconds" min="0" max="59" placeholder="SS">
+                    </div>
+                </div>
             </div>
 
             <div>
@@ -543,7 +594,10 @@
         <div class="history-card">
             <div class="history-header">
                 <h2>Registro Storico delle Sessioni</h2>
-                <button class="reset-btn" onclick="resetData()">Resetta Intera App</button>
+                <div class="history-header-actions">
+                    <button class="add-record-btn" onclick="openManualEntryModal()" title="Aggiungi record manuale">+ Aggiungi Record</button>
+                    <button class="reset-btn" onclick="resetData()">Resetta Intera App</button>
+                </div>
             </div>
             <div style="overflow-x: auto;">
                 <table id="history-table">
@@ -607,43 +661,6 @@
                 <!-- Generato dinamicamente in base alle categorie -->
             </div>
         </div>
-
-        <!-- AGGIUNTA RECORD MANUALE -->
-        <div class="settings-section">
-            <h2>➕ Aggiungi Record Manuale nello Storico</h2>
-            <div class="settings-form">
-                <div class="form-group">
-                    <label for="manual-date">Data Registrazione:</label>
-                    <input type="date" id="manual-date">
-                </div>
-                <div class="form-group">
-                    <label>Tempo di Studio:</label>
-                    <div class="form-row-mixed">
-                        <input type="number" id="manual-hours" min="0" placeholder="Ore" style="width:50%">
-                        <input type="number" id="manual-minutes" min="0" max="59" placeholder="Min" style="width:50%">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Tempo di Pausa:</label>
-                    <div class="form-row-mixed">
-                        <input type="number" id="manual-pause-hours" min="0" placeholder="Ore" style="width:50%">
-                        <input type="number" id="manual-pause-minutes" min="0" max="59" placeholder="Min" style="width:50%">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="manual-score">Voto Previsto (0-30, opzionale):</label>
-                    <input type="number" id="manual-score" min="0" max="30" placeholder="Es. 24">
-                </div>
-                <div class="form-group">
-                    <label for="manual-note">Note (opzionale):</label>
-                    <input type="text" id="manual-note" placeholder="Note sulla sessione">
-                </div>
-                <!-- Campi dinamici per categorie inseriti qui -->
-                <div id="manual-categories-inputs" style="display: contents;"></div>
-                
-                <button class="btn-block" style="background-color: var(--success);" onclick="addManualHistory()">Inserisci nello Storico</button>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -668,6 +685,47 @@
         <div class="modal-actions">
             <button class="timer-btn btn-save-time" onclick="confirmSessionLog()">💾 Salva nello Storico</button>
             <button class="timer-btn btn-reset-timer" onclick="skipSessionLog()">Non salvare</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE AGGIUNTA RECORD MANUALE -->
+<div id="manual-entry-modal-overlay" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+        <h2>➕ Aggiungi Record Manuale</h2>
+
+        <div class="form-group">
+            <label for="manual-date">Data Registrazione:</label>
+            <input type="date" id="manual-date">
+        </div>
+        <div class="form-group">
+            <label>Tempo di Studio:</label>
+            <div class="form-row-mixed">
+                <input type="number" id="manual-hours" min="0" placeholder="Ore" style="width:50%">
+                <input type="number" id="manual-minutes" min="0" max="59" placeholder="Min" style="width:50%">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Tempo di Pausa:</label>
+            <div class="form-row-mixed">
+                <input type="number" id="manual-pause-hours" min="0" placeholder="Ore" style="width:50%">
+                <input type="number" id="manual-pause-minutes" min="0" max="59" placeholder="Min" style="width:50%">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="manual-score">Voto Previsto (0-30, opzionale):</label>
+            <input type="number" id="manual-score" min="0" max="30" placeholder="Es. 24">
+        </div>
+        <div class="form-group">
+            <label for="manual-note">Note (opzionale):</label>
+            <input type="text" id="manual-note" placeholder="Note sulla sessione">
+        </div>
+        <!-- Campi dinamici per categorie inseriti qui -->
+        <div id="manual-categories-inputs" style="display: contents;"></div>
+
+        <div class="modal-actions">
+            <button class="timer-btn btn-save-time" onclick="addManualHistory()">💾 Inserisci nello Storico</button>
+            <button class="timer-btn btn-reset-timer" onclick="closeManualEntryModal()">Annulla</button>
         </div>
     </div>
 </div>
@@ -701,6 +759,8 @@
     let currentlyEditingRowIndex = null;
     let pendingLogStudySeconds = 0;
     let pendingLogPauseSeconds = 0;
+    let editWasSessionActive = false;
+    let editWasStudying = false;
 
     window.onload = function() {
         document.getElementById('manual-date').valueAsDate = new Date();
@@ -1014,12 +1074,11 @@
         if (isEditMode) return;
 
         if (state.sessionStartTime === null) {
-            // AVVIA una nuova sessione: si parte sempre in modalità "studio"
+            // AVVIA una nuova sessione: riparte dai valori attuali (0 di default,
+            // oppure quelli eventualmente impostati con "Modifica")
             state.sessionStartTime = Date.now();
             state.timerStartTime = Date.now();
-            state.timerAccumulatedSeconds = 0;
             state.pauseStartTime = null;
-            state.pauseAccumulatedSeconds = 0;
 
             startVisualInterval();
             updateTimerButtons();
@@ -1168,54 +1227,84 @@
         const pauseBtn = document.getElementById('btn-pause-toggle');
 
         if (!isEditMode) {
-            // Se la sessione è attiva, la terminiamo prima di modificare manualmente
-            if (state.sessionStartTime !== null) {
-                if (state.timerStartTime !== null) {
-                    state.timerAccumulatedSeconds += Math.floor((Date.now() - state.timerStartTime) / 1000);
-                    state.timerStartTime = null;
-                }
-                if (state.pauseStartTime !== null) {
-                    state.pauseAccumulatedSeconds += Math.floor((Date.now() - state.pauseStartTime) / 1000);
-                    state.pauseStartTime = null;
-                }
-                clearInterval(visualInterval);
-                state.sessionStartTime = null;
-                updateTimerButtons();
+            // Congeliamo il conteggio corrente (senza terminare la sessione) per poter
+            // modificare liberamente sia il tempo di studio sia quello di pausa
+            editWasSessionActive = (state.sessionStartTime !== null);
+            editWasStudying = (state.timerStartTime !== null);
+
+            if (state.timerStartTime !== null) {
+                state.timerAccumulatedSeconds += Math.floor((Date.now() - state.timerStartTime) / 1000);
+                state.timerStartTime = null;
             }
+            if (state.pauseStartTime !== null) {
+                state.pauseAccumulatedSeconds += Math.floor((Date.now() - state.pauseStartTime) / 1000);
+                state.pauseStartTime = null;
+            }
+            clearInterval(visualInterval);
 
             isEditMode = true;
             textContainer.style.display = 'none';
             inputContainer.style.display = 'flex';
             toggleBtn.style.opacity = '0.5';
+            toggleBtn.disabled = true;
             pauseBtn.style.opacity = '0.5';
+            pauseBtn.disabled = true;
             editBtn.innerText = "💾 Salva Tempo";
             editBtn.className = "timer-btn btn-save-time";
 
-            let totalSeconds = state.timerAccumulatedSeconds;
-            document.getElementById('edit-hours').value = Math.floor(totalSeconds / 3600);
-            document.getElementById('edit-minutes').value = Math.floor((totalSeconds % 3600) / 60);
-            document.getElementById('edit-seconds').value = totalSeconds % 60;
+            let studySeconds = state.timerAccumulatedSeconds;
+            document.getElementById('edit-hours').value = Math.floor(studySeconds / 3600);
+            document.getElementById('edit-minutes').value = Math.floor((studySeconds % 3600) / 60);
+            document.getElementById('edit-seconds').value = studySeconds % 60;
+
+            let pauseSeconds = state.pauseAccumulatedSeconds;
+            document.getElementById('edit-pause-hours').value = Math.floor(pauseSeconds / 3600);
+            document.getElementById('edit-pause-minutes').value = Math.floor((pauseSeconds % 3600) / 60);
+            document.getElementById('edit-pause-seconds').value = pauseSeconds % 60;
         } else {
             let h = parseInt(document.getElementById('edit-hours').value) || 0;
             let m = parseInt(document.getElementById('edit-minutes').value) || 0;
             let s = parseInt(document.getElementById('edit-seconds').value) || 0;
-
             m = Math.min(59, Math.max(0, m));
             s = Math.min(59, Math.max(0, s));
             h = Math.max(0, h);
-
             state.timerAccumulatedSeconds = (h * 3600) + (m * 60) + s;
+
+            let ph = parseInt(document.getElementById('edit-pause-hours').value) || 0;
+            let pm = parseInt(document.getElementById('edit-pause-minutes').value) || 0;
+            let ps = parseInt(document.getElementById('edit-pause-seconds').value) || 0;
+            pm = Math.min(59, Math.max(0, pm));
+            ps = Math.min(59, Math.max(0, ps));
+            ph = Math.max(0, ph);
+            state.pauseAccumulatedSeconds = (ph * 3600) + (pm * 60) + ps;
+
             state.timerStartTime = null;
+            state.pauseStartTime = null;
 
             isEditMode = false;
             textContainer.style.display = 'flex';
             inputContainer.style.display = 'none';
             toggleBtn.style.opacity = '1';
+            toggleBtn.disabled = false;
             pauseBtn.style.opacity = '1';
+            pauseBtn.disabled = false;
             editBtn.innerText = "✏️ Modifica";
             editBtn.className = "timer-btn btn-edit";
 
-            updateAllTimerDisplays();
+            // Se la sessione era attiva prima della modifica, la riprendiamo esattamente
+            // dallo stesso sotto-stato (studio o pausa) in cui si trovava
+            if (editWasSessionActive) {
+                if (editWasStudying) {
+                    state.timerStartTime = Date.now();
+                } else {
+                    state.pauseStartTime = Date.now();
+                }
+                startVisualInterval();
+            } else {
+                updateAllTimerDisplays();
+            }
+
+            updateTimerButtons();
             saveState();
         }
     }
@@ -1229,7 +1318,18 @@
             state.pauseAccumulatedSeconds = 0;
             state.sessionStartTime = null;
 
-            if(isEditMode) toggleEditMode();
+            if(isEditMode) {
+                // Usciamo dalla modalità modifica senza applicare i valori nei campi
+                // (già azzerati sopra), evitando di sovrascrivere lo stato appena resettato
+                isEditMode = false;
+                document.getElementById('timer-text-container').style.display = 'flex';
+                document.getElementById('timer-input-container').style.display = 'none';
+                const editBtn = document.getElementById('btn-timer-edit');
+                editBtn.innerText = "✏️ Modifica";
+                editBtn.className = "timer-btn btn-edit";
+                document.getElementById('btn-timer-toggle').disabled = false;
+                document.getElementById('btn-pause-toggle').disabled = false;
+            }
 
             updateTimerButtons();
             updateAllTimerDisplays();
@@ -1298,6 +1398,26 @@
     }
 
     /* LOGICA INSERIMENTO MANUALE STORICO */
+    /* MODALE AGGIUNTA RECORD MANUALE */
+    function openManualEntryModal() {
+        document.getElementById('manual-date').valueAsDate = new Date();
+        document.getElementById('manual-hours').value = '';
+        document.getElementById('manual-minutes').value = '';
+        document.getElementById('manual-pause-hours').value = '';
+        document.getElementById('manual-pause-minutes').value = '';
+        document.getElementById('manual-score').value = '';
+        document.getElementById('manual-note').value = '';
+        Object.keys(state.categories).forEach(id => {
+            const el = document.getElementById(`manual-${id}`);
+            if(el) el.value = 0;
+        });
+        document.getElementById('manual-entry-modal-overlay').style.display = 'flex';
+    }
+
+    function closeManualEntryModal() {
+        document.getElementById('manual-entry-modal-overlay').style.display = 'none';
+    }
+
     function addManualHistory() {
         const dateInput = document.getElementById('manual-date').value;
         if(!dateInput) { alert("Inserisci una data valida!"); return; }
@@ -1343,13 +1463,7 @@
         saveState();
         renderHistory();
 
-        document.getElementById('manual-hours').value = '';
-        document.getElementById('manual-minutes').value = '';
-        document.getElementById('manual-pause-hours').value = '';
-        document.getElementById('manual-pause-minutes').value = '';
-        document.getElementById('manual-score').value = '';
-        document.getElementById('manual-note').value = '';
-        alert("Sessione inserita manualmente nello storico!");
+        closeManualEntryModal();
     }
 
     /* RENDERING DINAMICO TABELLA STORICO ED EDIT IN LINEA */
