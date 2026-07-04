@@ -41,3 +41,4 @@ All data is automatically saved in the browser (localStorage), so everything is 
 - Dark mode toggle
 - Uniform styling (texts, buttons, inputs, etc.)
 - English translation
+- Better mobile responsiveness
