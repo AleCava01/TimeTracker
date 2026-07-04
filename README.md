@@ -42,3 +42,5 @@ All data is automatically saved in the browser (localStorage), so everything is 
 - Uniform styling (texts, buttons, inputs, etc.)
 - English translation
 - Better mobile responsiveness
+- Add "in advance" and "behind" status for the objectives progress bar (e.g. if you have 10 questions to do in 5 days, and you did 3 in 1 day, you're ahead of schedule)
+- Efficiency KPI (e.g. study time / total session time)
