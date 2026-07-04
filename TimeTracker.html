@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio Tracker Pro - Controllo Totale</title>
+    <title>Study Tracker Pro - Total Control</title>
     <style>
         :root {
             --bg-color: #f4f7f6;
@@ -15,7 +15,59 @@
             --warning: #f1c40f;
             --dark-blue: #2c3e50;
             --light-blue: #ecf0f1;
+
+            --border-color: #bdc3c7;
+            --muted-text: #7f8c8d;
+            --label-text: #555555;
+            --shadow: rgba(0,0,0,0.05);
+            --shadow-strong: rgba(0,0,0,0.15);
+            --shadow-modal: rgba(0,0,0,0.25);
+            --overlay-bg: rgba(0,0,0,0.5);
+            --table-header-bg: #f8fafc;
+            --table-header-text: #64748b;
+            --row-border: #e2e8f0;
+            --row-hover: #f1f5f9;
+            --btn-neutral-bg: #ecf0f1;
+            --btn-neutral-hover: #bdc3c7;
+            --tab-inactive-bg: #bdc3c7;
+            --input-bg: #ffffff;
+            --disabled-bg: #e2e8f0;
+            --score-badge-bg: rgba(74, 144, 226, 0.15);
+            --radius: 12px;
+            --radius-sm: 6px;
         }
+
+        [data-theme="dark"] {
+            --bg-color: #10151f;
+            --card-bg: #1c2432;
+            --text-color: #e2e8f0;
+            --primary: #5b9de3;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f1c40f;
+            --dark-blue: #eef2f5;
+            --light-blue: #263043;
+
+            --border-color: #3a4657;
+            --muted-text: #94a3b8;
+            --label-text: #b8c2cf;
+            --shadow: rgba(0,0,0,0.3);
+            --shadow-strong: rgba(0,0,0,0.45);
+            --shadow-modal: rgba(0,0,0,0.6);
+            --overlay-bg: rgba(0,0,0,0.65);
+            --table-header-bg: #182131;
+            --table-header-text: #94a3b8;
+            --row-border: #2b3648;
+            --row-hover: #232e40;
+            --btn-neutral-bg: #2a3648;
+            --btn-neutral-hover: #3a4657;
+            --tab-inactive-bg: #2a3648;
+            --input-bg: #202a3a;
+            --disabled-bg: #2b3648;
+            --score-badge-bg: rgba(91, 157, 227, 0.2);
+        }
+
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -25,11 +77,13 @@
             padding: 20px;
             display: flex;
             justify-content: center;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         .container {
             max-width: 900px;
             width: 100%;
+            position: relative;
         }
 
         header {
@@ -37,32 +91,62 @@
             margin-bottom: 20px;
         }
 
-        h1 { margin-bottom: 5px; color: var(--dark-blue); }
+        h1 { margin: 0 0 5px 0; color: var(--dark-blue); }
+        #header-dates { color: var(--muted-text); margin: 0; }
 
-        /* Navigazione Tab */
+        /* Top bar: tab navigation + theme toggle */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
         .nav-tabs {
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 25px;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
-            background-color: #bdc3c7;
+            background-color: var(--tab-inactive-bg);
             color: white;
             border: none;
             padding: 12px 24px;
             font-size: 1rem;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.2s ease;
+            font-family: inherit;
         }
 
         .tab-btn.active {
             background-color: var(--dark-blue);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            color: var(--bg-color);
+            box-shadow: 0 4px 6px var(--shadow-strong);
         }
+        [data-theme="dark"] .tab-btn.active { color: #10151f; }
+
+        .theme-toggle-btn {
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            font-size: 1.15rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px var(--shadow);
+            flex-shrink: 0;
+        }
+        .theme-toggle-btn:hover { opacity: 0.85; }
 
         .tab-content {
             display: none;
@@ -74,9 +158,9 @@
 
         .info-panel {
             background: var(--dark-blue);
-            color: white;
+            color: var(--bg-color);
             padding: 15px 20px;
-            border-radius: 12px;
+            border-radius: var(--radius);
             margin-bottom: 25px;
             display: flex;
             justify-content: space-around;
@@ -84,6 +168,7 @@
             gap: 15px;
             text-align: center;
         }
+        [data-theme="dark"] .info-panel { color: #10151f; }
 
         .info-box span {
             display: block;
@@ -92,15 +177,22 @@
             color: #1abc9c;
         }
 
-        /* Sezione Timer */
+        /* Timer section */
         .timer-card {
             background: var(--card-bg);
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px var(--shadow);
             margin-bottom: 25px;
             text-align: center;
             border-left: 5px solid var(--primary);
+        }
+        .timer-card-title {
+            font-weight: bold;
+            color: var(--muted-text);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
         }
         .timer-display {
             font-size: 3rem;
@@ -129,7 +221,7 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #7f8c8d;
+            color: var(--muted-text);
             font-weight: bold;
             margin-bottom: 4px;
         }
@@ -142,14 +234,15 @@
         #timer-block-study .timer-display-value { color: var(--primary); font-size: 2.4rem; }
         #timer-block-pause .timer-display-value { color: var(--warning); }
         #timer-block-total .timer-display-value { color: var(--dark-blue); }
+        #timer-block-efficiency .timer-display-value { color: var(--success); }
         .btn-end-session { background-color: var(--danger); color: white; }
         .btn-resume-pause { background-color: var(--success); color: white; }
 
-        /* Modale fine sessione */
+        /* Session-end modal */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: var(--overlay-bg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -158,11 +251,11 @@
         }
         .modal-card {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: var(--radius);
             padding: 25px;
             max-width: 450px;
             width: 100%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            box-shadow: 0 10px 30px var(--shadow-modal);
         }
         .modal-card h2 { margin-top: 0; color: var(--dark-blue); text-align: center; }
         .modal-summary {
@@ -172,20 +265,22 @@
             font-weight: bold;
             text-align: center;
             padding: 10px;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             margin-bottom: 18px;
             font-size: 0.95rem;
         }
         .modal-card .form-group { margin-bottom: 15px; text-align: left; }
-        .modal-card label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 0.9rem; color: #555; }
+        .modal-card label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 0.9rem; color: var(--label-text); }
         .modal-card input[type="number"], .modal-card textarea {
             width: 100%;
             box-sizing: border-box;
             padding: 8px;
-            border: 1px solid #bdc3c7;
-            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
             font-family: inherit;
             font-size: 1rem;
+            background: var(--input-bg);
+            color: var(--text-color);
         }
         .modal-card textarea { resize: vertical; }
         .modal-actions { display: flex; justify-content: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
@@ -194,7 +289,7 @@
             padding: 2px 8px;
             border-radius: 10px;
             font-weight: bold;
-            background: rgba(74, 144, 226, 0.15);
+            background: var(--score-badge-bg);
             color: var(--primary);
         }
         .note-cell {
@@ -227,30 +322,34 @@
             font-size: 1.6rem;
             text-align: center;
             font-family: monospace;
-            border: 1px solid #bdc3c7;
-            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
             padding: 2px;
+            background: var(--input-bg);
+            color: var(--text-color);
         }
         .timer-inputs span {
             font-size: 1.4rem;
-            color: #7f8c8d;
+            color: var(--muted-text);
         }
         .timer-btn {
             border: none;
             padding: 10px 20px;
             font-size: 1rem;
             font-weight: bold;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             margin: 0 5px;
             transition: opacity 0.2s;
+            font-family: inherit;
         }
         .btn-start { background-color: var(--primary); color: white; }
         .btn-pause { background-color: var(--warning); color: #333; }
         .btn-edit { background-color: #34495e; color: white; }
         .btn-save-time { background-color: var(--success); color: white; }
-        .btn-reset-timer { background-color: #e2e8f0; color: #333; }
+        .btn-reset-timer { background-color: var(--btn-neutral-bg); color: var(--text-color); }
         .timer-btn:hover { opacity: 0.9; }
+        .timer-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .grid {
             display: grid;
@@ -262,39 +361,43 @@
         .card {
             background: var(--card-bg);
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px var(--shadow);
             text-align: center;
         }
 
-        .card h3 { margin-top: 0; color: #7f8c8d; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        
+        .card h3 { margin-top: 0; color: var(--muted-text); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+
         .counter { font-size: 2.2rem; font-weight: bold; margin: 10px 0; color: var(--dark-blue); }
-        
+
         .controls button, .day-off-controls button {
-            background: #ecf0f1;
+            background: var(--btn-neutral-bg);
+            color: var(--text-color);
             border: none;
             padding: 8px 14px;
             font-size: 1.2rem;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             transition: background 0.2s;
+            font-family: inherit;
         }
-        .controls button:hover, .day-off-controls button:hover { background: #bdc3c7; }
-        
+        .controls button:hover, .day-off-controls button:hover { background: var(--btn-neutral-hover); }
+
         .controls input, .day-off-controls input, .settings-form input {
             width: 60px;
             text-align: center;
             font-size: 1.2rem;
             padding: 5px;
-            border: 1px solid #bdc3c7;
-            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background: var(--input-bg);
+            color: var(--text-color);
         }
 
         .status-indicator {
             margin-top: 15px;
             padding: 8px;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             font-weight: bold;
             font-size: 0.85rem;
         }
@@ -302,12 +405,15 @@
         .status-ahead { background-color: rgba(46, 204, 113, 0.2); color: #27ae60; }
         .status-behind { background-color: rgba(231, 76, 60, 0.2); color: #c0392b; }
         .status-ontrack { background-color: rgba(241, 196, 15, 0.2); color: #d35400; }
+        [data-theme="dark"] .status-ahead { color: #4ee29a; }
+        [data-theme="dark"] .status-behind { color: #ff8b7a; }
+        [data-theme="dark"] .status-ontrack { color: #ffd166; }
 
         .setup-card {
             background: var(--card-bg);
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px var(--shadow);
             margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
@@ -316,10 +422,10 @@
             gap: 15px;
         }
 
-        .day-off-container { display: flex; align-items: center; gap: 10px; }
+        .day-off-container { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
         .progress-bar-container {
-            background: #e0e0e0;
+            background: var(--disabled-bg);
             border-radius: 10px;
             height: 10px;
             width: 100%;
@@ -333,16 +439,16 @@
             transition: width 0.3s ease;
         }
 
-        /* Nuove Sezioni Impostazioni */
+        /* Settings sections */
         .settings-section {
             background: var(--card-bg);
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px var(--shadow);
             margin-bottom: 25px;
         }
         .settings-section h2 { margin-top: 0; color: var(--dark-blue); font-size: 1.3rem; border-bottom: 2px solid var(--light-blue); padding-bottom: 8px;}
-        
+
         .settings-form {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -355,14 +461,16 @@
             flex-direction: column;
             gap: 5px;
         }
-        .form-group label { font-weight: bold; font-size: 0.9rem; color: #555; }
+        .form-group label { font-weight: bold; font-size: 0.9rem; color: var(--label-text); }
         .form-group input[type="number"], .form-group input[type="date"], .form-group input[type="text"] {
             width: 100%;
             box-sizing: border-box;
             font-size: 1rem;
             padding: 8px;
-            border: 1px solid #bdc3c7;
-            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background: var(--input-bg);
+            color: var(--text-color);
         }
 
         .form-row-mixed {
@@ -376,14 +484,15 @@
             background-color: var(--primary);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
+            font-family: inherit;
         }
         .btn-block:hover { opacity: 0.9; }
 
-        /* Stili per la gestione dinamica delle categorie */
+        /* Dynamic category management */
         .category-manager-list {
             grid-column: 1 / -1;
             display: flex;
@@ -397,7 +506,9 @@
             align-items: center;
             background: var(--light-blue);
             padding: 10px;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .btn-delete-cat {
             background: var(--danger);
@@ -406,14 +517,15 @@
             padding: 4px 8px;
             border-radius: 4px;
             cursor: pointer;
+            font-family: inherit;
         }
 
-        /* Sezione Storico Giornaliero */
+        /* Daily history section */
         .history-card {
             background: var(--card-bg);
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px var(--shadow);
             margin-top: 25px;
         }
 
@@ -440,11 +552,12 @@
             color: white;
             border: none;
             padding: 8px 16px;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             font-size: 0.9rem;
             font-weight: bold;
             cursor: pointer;
             transition: opacity 0.2s;
+            font-family: inherit;
         }
         .add-record-btn:hover { opacity: 0.9; }
 
@@ -453,11 +566,12 @@
             color: white;
             border: none;
             padding: 10px 18px;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             font-size: 1rem;
             cursor: pointer;
             font-weight: bold;
             transition: opacity 0.2s;
+            font-family: inherit;
         }
         .btn-log:hover { opacity: 0.9; }
 
@@ -470,11 +584,11 @@
 
         th, td {
             padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid var(--row-border);
         }
 
-        th { background-color: #f8fafc; color: #64748b; font-size: 0.9rem; text-transform: uppercase; }
-        tr:hover { background-color: #f1f5f9; }
+        th { background-color: var(--table-header-bg); color: var(--table-header-text); font-size: 0.9rem; text-transform: uppercase; }
+        tr:hover { background-color: var(--row-hover); }
 
         .table-actions button {
             padding: 4px 8px;
@@ -483,6 +597,7 @@
             border-radius: 4px;
             cursor: pointer;
             margin-right: 2px;
+            font-family: inherit;
         }
         .btn-row-edit { background-color: #34495e; color: white; }
         .btn-row-delete { background-color: var(--danger); color: white; }
@@ -493,64 +608,103 @@
             padding: 4px;
             text-align: center;
             font-size: 0.9rem;
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
         }
 
         .reset-btn {
             background: transparent;
-            color: #95a5a6;
-            border: 1px solid #95a5a6;
+            color: var(--muted-text);
+            border: 1px solid var(--muted-text);
             padding: 6px 12px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.8rem;
+            font-family: inherit;
         }
         .reset-btn:hover { background: #e74c3c; color: white; border-color: #e74c3c; }
-        .empty-history { text-align: center; color: #94a3b8; padding: 20px 0; font-style: italic; }
+        .empty-history { text-align: center; color: var(--muted-text); padding: 20px 0; font-style: italic; }
+
+        .efficiency-cell { font-weight: bold; }
+
+        /* Responsive tweaks for mobile */
+        @media (max-width: 640px) {
+            body { padding: 10px; }
+            h1 { font-size: 1.4rem; }
+            .theme-toggle-btn { width: 38px; height: 38px; }
+            .tab-btn { padding: 10px 16px; font-size: 0.9rem; flex: 1 1 auto; }
+            .info-panel { padding: 12px; gap: 10px; }
+            .info-box { flex: 1 1 40%; }
+            .info-box span { font-size: 1.2rem; }
+            .timer-display-value { font-size: 1.3rem; }
+            #timer-block-study .timer-display-value { font-size: 1.8rem; }
+            .timer-breakdown { gap: 14px; }
+            .timer-inputs-edit { gap: 16px; }
+            .timer-btn { padding: 9px 14px; font-size: 0.9rem; margin: 4px 3px; }
+            .setup-card { flex-direction: column; align-items: stretch; text-align: center; }
+            .grid { grid-template-columns: 1fr; }
+            .settings-form { grid-template-columns: 1fr; }
+            .modal-card { padding: 16px; }
+            table { font-size: 0.82rem; }
+            th, td { padding: 8px 6px; }
+            .note-cell { max-width: 90px; }
+            .history-header { flex-direction: column; align-items: flex-start; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>Studio Tracker Pro</h1>
-        <p id="header-dates">Scadenza studio: -- | Esame: --</p>
+        <h1>Study Tracker Pro</h1>
+        <p id="header-dates">Study deadline: -- | Exam: --</p>
     </header>
 
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('main-tab')">📊 Tabellone Generale</button>
-        <button class="tab-btn" onclick="switchTab('settings-tab')">⚙️ Impostazioni</button>
+    <div class="top-bar">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('main-tab')">📊 Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('settings-tab')">⚙️ Settings</button>
+        </div>
+        <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
     </div>
 
     <!-- MAIN TAB -->
     <div id="main-tab" class="tab-content active">
         <div class="info-panel">
-            <div class="info-box">Oggi è il<span id="date-today">--/--/----</span></div>
-            <div class="info-box">Giorni totali rimasti<span id="days-left">0</span></div>
-            <div class="info-box">Giorni di studio effettivi<span id="study-days-left">0</span></div>
+            <div class="info-box">Today is<span id="date-today">--/--/----</span></div>
+            <div class="info-box">Total days left<span id="days-left">0</span></div>
+            <div class="info-box">Effective study days<span id="study-days-left">0</span></div>
+            <div class="info-box">Avg. efficiency<span id="avg-efficiency">0%</span></div>
         </div>
 
         <div class="timer-card">
-            <div style="font-weight: bold; color: #7f8c8d; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px;">Timer Sessione Odierna</div>
-            
+            <div class="timer-card-title">Today's Session Timer</div>
+
             <div class="timer-breakdown" id="timer-text-container">
                 <div class="timer-block" id="timer-block-study">
-                    <span class="timer-label">Studio</span>
+                    <span class="timer-label">Study</span>
                     <span class="timer-display-value" id="timer-display-study">00:00:00</span>
                 </div>
                 <div class="timer-block" id="timer-block-pause">
-                    <span class="timer-label">Pausa</span>
+                    <span class="timer-label">Break</span>
                     <span class="timer-display-value" id="timer-display-pause">00:00:00</span>
                 </div>
                 <div class="timer-block" id="timer-block-total">
-                    <span class="timer-label">Sessione Totale</span>
+                    <span class="timer-label">Total Session</span>
                     <span class="timer-display-value" id="timer-display-total">00:00:00</span>
                 </div>
+                <div class="timer-block" id="timer-block-efficiency">
+                    <span class="timer-label">Efficiency</span>
+                    <span class="timer-display-value" id="timer-display-efficiency">0%</span>
+                </div>
             </div>
-            <div id="session-status-label" style="font-size: 0.85rem; font-weight: bold; color: #7f8c8d; margin-bottom: 10px;">Sessione non avviata</div>
+            <div id="session-status-label" style="font-size: 0.85rem; font-weight: bold; color: var(--muted-text); margin-bottom: 10px;">Session not started</div>
 
             <div class="timer-inputs-edit" id="timer-input-container" style="display: none;">
                 <div class="timer-edit-group">
-                    <span class="timer-label">Studio</span>
+                    <span class="timer-label">Study</span>
                     <div class="timer-inputs">
                         <input type="number" id="edit-hours" min="0" max="99" placeholder="HH"><span>:</span>
                         <input type="number" id="edit-minutes" min="0" max="59" placeholder="MM"><span>:</span>
@@ -558,7 +712,7 @@
                     </div>
                 </div>
                 <div class="timer-edit-group">
-                    <span class="timer-label">Pausa</span>
+                    <span class="timer-label">Break</span>
                     <div class="timer-inputs">
                         <input type="number" id="edit-pause-hours" min="0" max="99" placeholder="HH"><span>:</span>
                         <input type="number" id="edit-pause-minutes" min="0" max="59" placeholder="MM"><span>:</span>
@@ -568,176 +722,177 @@
             </div>
 
             <div>
-                <button class="timer-btn btn-start" id="btn-timer-toggle" onclick="toggleSession()">Avvia Sessione</button>
-                <button class="timer-btn btn-pause" id="btn-pause-toggle" onclick="togglePause()" style="display:none;">☕ Pausa</button>
-                <button class="timer-btn btn-edit" id="btn-timer-edit" onclick="toggleEditMode()">✏️ Modifica</button>
-                <button class="timer-btn btn-reset-timer" onclick="resetTimer()">Azzera Timer</button>
+                <button class="timer-btn btn-start" id="btn-timer-toggle" onclick="toggleSession()">Start Session</button>
+                <button class="timer-btn btn-pause" id="btn-pause-toggle" onclick="togglePause()" style="display:none;">☕ Break</button>
+                <button class="timer-btn btn-edit" id="btn-timer-edit" onclick="toggleEditMode()">✏️ Edit</button>
+                <button class="timer-btn btn-reset-timer" onclick="resetTimer()">Reset Timer</button>
             </div>
         </div>
 
         <div class="setup-card">
             <div class="day-off-container">
-                <strong>Giorni di "Day Off" (pausa) pianificati da oggi all'esame:</strong>
+                <strong>"Day Off" days planned from today until the exam:</strong>
                 <div class="day-off-controls">
                     <button onclick="changeDayOff(-1)">-</button>
                     <input type="number" id="input-dayoff" value="0" min="0" onchange="setDayOff()">
                     <button onclick="changeDayOff(1)">+</button>
                 </div>
             </div>
-            <button class="btn-log" onclick="logTodayProgress()">Salva Stato di Oggi</button>
+            <button class="btn-log" onclick="logTodayProgress()">Save Today's Progress</button>
         </div>
 
-        <!-- Griglia degli obiettivi generata dinamicamente via JS -->
+        <!-- Goals grid generated dynamically via JS -->
         <div class="grid" id="goals-grid"></div>
 
-        <!-- TABELLA STORICO (SPOSTATA IN HOMEPAGE) -->
+        <!-- HISTORY TABLE -->
         <div class="history-card">
             <div class="history-header">
-                <h2>Registro Storico delle Sessioni</h2>
+                <h2>Session History Log</h2>
                 <div class="history-header-actions">
-                    <button class="add-record-btn" onclick="openManualEntryModal()" title="Aggiungi record manuale">+ Aggiungi Record</button>
-                    <button class="reset-btn" onclick="resetData()">Resetta Intera App</button>
+                    <button class="add-record-btn" onclick="openManualEntryModal()" title="Add a manual record">+ Add Record</button>
+                    <button class="reset-btn" onclick="resetData()">Reset Entire App</button>
                 </div>
             </div>
             <div style="overflow-x: auto;">
                 <table id="history-table">
                     <thead>
                         <tr id="history-table-header">
-                            <!-- Intestazioni generate dinamicamente -->
+                            <!-- Headers generated dynamically -->
                         </tr>
                     </thead>
                     <tbody id="history-table-body">
                     </tbody>
                 </table>
             </div>
-            <div id="empty-message" class="empty-history">Nessun dato registrato finora.</div>
+            <div id="empty-message" class="empty-history">No data recorded yet.</div>
         </div>
     </div>
 
     <!-- SETTINGS TAB -->
     <div id="settings-tab" class="tab-content">
-        <!-- ESPORTAZIONE DATA IN CSV -->
+        <!-- EXPORT DATA AS CSV -->
         <div class="settings-section">
-            <h2>💾 Esportazione Dati dello Storico</h2>
+            <h2>💾 Export History Data</h2>
             <div class="settings-form">
-                <button class="btn-block" style="background-color: var(--primary);" onclick="downloadCSV()">📥 Scarica Registro in CSV</button>
+                <button class="btn-block" style="background-color: var(--primary);" onclick="downloadCSV()">📥 Download Log as CSV</button>
             </div>
         </div>
 
-        <!-- MODIFICA DATA ESAME -->
+        <!-- EXAM DATE SETTING -->
         <div class="settings-section">
-            <h2>📅 Impostazione Data Esame</h2>
+            <h2>📅 Exam Date Setting</h2>
             <div class="settings-form">
                 <div class="form-group" style="grid-column: 1 / -1;">
-                    <label for="set-exam-date">Seleziona la data dell'esame:</label>
+                    <label for="set-exam-date">Select the exam date:</label>
                     <input type="date" id="set-exam-date" onchange="saveExamDate()">
                 </div>
             </div>
         </div>
 
-        <!-- GESTIONE CATEGORIE -->
+        <!-- CATEGORY MANAGEMENT -->
         <div class="settings-section">
-            <h2>🛠️ Gestione Categorie Obiettivi</h2>
+            <h2>🛠️ Manage Goal Categories</h2>
             <div class="settings-form">
                 <div class="category-manager-list" id="category-manager-list">
-                    <!-- Popolato dinamicamente -->
+                    <!-- Populated dynamically -->
                 </div>
                 <div class="form-group">
-                    <label for="new-cat-name">Nome Nuova Categoria:</label>
-                    <input type="text" id="new-cat-name" placeholder="Es. Temi d'Esame">
+                    <label for="new-cat-name">New Category Name:</label>
+                    <input type="text" id="new-cat-name" placeholder="e.g. Exam Essays">
                 </div>
                 <div class="form-group">
-                    <label for="new-cat-target">Target Totale Iniziale:</label>
+                    <label for="new-cat-target">Initial Total Target:</label>
                     <input type="number" id="new-cat-target" min="1" value="10">
                 </div>
-                <button class="btn-block" style="background-color: var(--success);" onclick="addNewCategory()">➕ Aggiungi Categoria</button>
+                <button class="btn-block" style="background-color: var(--success);" onclick="addNewCategory()">➕ Add Category</button>
             </div>
         </div>
 
-        <!-- MODIFICA VALORI TARGET -->
+        <!-- EDIT TARGET VALUES -->
         <div class="settings-section">
-            <h2>🎯 Modifica Obiettivi Globali (Target Totali)</h2>
+            <h2>🎯 Edit Global Goals (Total Targets)</h2>
             <div class="settings-form" id="targets-settings-form">
-                <!-- Generato dinamicamente in base alle categorie -->
+                <!-- Generated dynamically based on categories -->
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODALE FINE SESSIONE: punteggio previsto e note -->
+<!-- SESSION-END MODAL: expected score and notes -->
 <div id="session-end-modal-overlay" class="modal-overlay" style="display:none;">
     <div class="modal-card">
-        <h2>🏁 Sessione Terminata</h2>
+        <h2>🏁 Session Ended</h2>
         <div class="modal-summary" id="session-end-summary">
-            Studio: 00:00:00 &nbsp;|&nbsp; Pausa: 00:00:00 &nbsp;|&nbsp; Totale: 00:00:00
+            Study: 00:00:00 &nbsp;|&nbsp; Break: 00:00:00 &nbsp;|&nbsp; Total: 00:00:00
         </div>
 
         <div class="form-group">
-            <label for="session-score-input">Che voto pensi prenderesti all'esame ora? (0-30)</label>
-            <input type="number" id="session-score-input" min="0" max="30" placeholder="Es. 24 (lascia vuoto se non sai)">
+            <label for="session-score-input">What score do you think you'd get on the exam right now? (0-30)</label>
+            <input type="number" id="session-score-input" min="0" max="30" placeholder="e.g. 24 (leave empty if unsure)">
         </div>
 
         <div class="form-group">
-            <label for="session-note-input">Note sulla sessione (opzionale)</label>
-            <textarea id="session-note-input" rows="3" placeholder="Es. Argomenti trattati, difficoltà incontrate, sensazioni..."></textarea>
+            <label for="session-note-input">Session notes (optional)</label>
+            <textarea id="session-note-input" rows="3" placeholder="e.g. Topics covered, difficulties, feelings..."></textarea>
         </div>
 
         <div class="modal-actions">
-            <button class="timer-btn btn-save-time" onclick="confirmSessionLog()">💾 Salva nello Storico</button>
-            <button class="timer-btn btn-reset-timer" onclick="skipSessionLog()">Non salvare</button>
+            <button class="timer-btn btn-save-time" onclick="confirmSessionLog()">💾 Save to History</button>
+            <button class="timer-btn btn-reset-timer" onclick="skipSessionLog()">Don't save</button>
         </div>
     </div>
 </div>
 
-<!-- MODALE AGGIUNTA RECORD MANUALE -->
+<!-- MANUAL RECORD MODAL -->
 <div id="manual-entry-modal-overlay" class="modal-overlay" style="display:none;">
     <div class="modal-card">
-        <h2>➕ Aggiungi Record Manuale</h2>
+        <h2>➕ Add Manual Record</h2>
 
         <div class="form-group">
-            <label for="manual-date">Data Registrazione:</label>
+            <label for="manual-date">Record Date:</label>
             <input type="date" id="manual-date">
         </div>
         <div class="form-group">
-            <label>Tempo di Studio:</label>
+            <label>Study Time:</label>
             <div class="form-row-mixed">
-                <input type="number" id="manual-hours" min="0" placeholder="Ore" style="width:50%">
+                <input type="number" id="manual-hours" min="0" placeholder="Hours" style="width:50%">
                 <input type="number" id="manual-minutes" min="0" max="59" placeholder="Min" style="width:50%">
             </div>
         </div>
         <div class="form-group">
-            <label>Tempo di Pausa:</label>
+            <label>Break Time:</label>
             <div class="form-row-mixed">
-                <input type="number" id="manual-pause-hours" min="0" placeholder="Ore" style="width:50%">
+                <input type="number" id="manual-pause-hours" min="0" placeholder="Hours" style="width:50%">
                 <input type="number" id="manual-pause-minutes" min="0" max="59" placeholder="Min" style="width:50%">
             </div>
         </div>
         <div class="form-group">
-            <label for="manual-score">Voto Previsto (0-30, opzionale):</label>
-            <input type="number" id="manual-score" min="0" max="30" placeholder="Es. 24">
+            <label for="manual-score">Expected Score (0-30, optional):</label>
+            <input type="number" id="manual-score" min="0" max="30" placeholder="e.g. 24">
         </div>
         <div class="form-group">
-            <label for="manual-note">Note (opzionale):</label>
-            <input type="text" id="manual-note" placeholder="Note sulla sessione">
+            <label for="manual-note">Notes (optional):</label>
+            <input type="text" id="manual-note" placeholder="Session notes">
         </div>
-        <!-- Campi dinamici per categorie inseriti qui -->
+        <!-- Dynamic category inputs inserted here -->
         <div id="manual-categories-inputs" style="display: contents;"></div>
 
         <div class="modal-actions">
-            <button class="timer-btn btn-save-time" onclick="addManualHistory()">💾 Inserisci nello Storico</button>
-            <button class="timer-btn btn-reset-timer" onclick="closeManualEntryModal()">Annulla</button>
+            <button class="timer-btn btn-save-time" onclick="addManualHistory()">💾 Insert into History</button>
+            <button class="timer-btn btn-reset-timer" onclick="closeManualEntryModal()">Cancel</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Stato predefinito iniziale dell'app
+    // Initial default app state
     let defaultState = {
-        examDate: "2026-07-01", // Data esame iniziale (1 Luglio 2026)
+        examDate: "2026-07-01", // Initial exam date (July 1, 2026)
+        planStartDate: new Date().toISOString().slice(0, 10), // Reference day used to compute pace (ahead/behind schedule)
         categories: {
-            "domande": { name: "Domande", target: 154 },
-            "temi": { name: "Temi d'Esame", target: 13 },
-            "video": { name: "Video Esercitazioni", target: 9 }
+            "domande": { name: "Questions", target: 154 },
+            "temi": { name: "Exam Essays", target: 13 },
+            "video": { name: "Practice Videos", target: 9 }
         },
         progress: {
             domande: 0,
@@ -764,10 +919,11 @@
 
     window.onload = function() {
         document.getElementById('manual-date').valueAsDate = new Date();
+        loadTheme();
         loadState();
         updateUI();
         renderHistory();
-        
+
         if (state.sessionStartTime !== null) {
             startVisualInterval();
             updateTimerButtons();
@@ -785,33 +941,68 @@
         if(saved) {
             try {
                 let parsed = JSON.parse(saved);
-                // Controllo e pulizia retrocompatibilità delle vecchie strutture dati se presenti
+                // Backward-compatibility check and cleanup of older data structures
                 if (parsed.categories && parsed.progress) {
                     state = parsed;
                 } else {
-                    // Fallback se il vecchio localStorage rompe la struttura dinamica
+                    // Fallback if old localStorage breaks the dynamic structure
                     state = JSON.parse(JSON.stringify(defaultState));
                 }
             } catch(e) {
                 state = JSON.parse(JSON.stringify(defaultState));
             }
         }
-        
-        // Impostazione degli input nei form stabili
+
+        // Backfill planStartDate for saves created before this field existed
+        if (!state.planStartDate) {
+            if (state.history && state.history.length > 0) {
+                // Use the earliest known history date, otherwise today
+                state.planStartDate = new Date().toISOString().slice(0, 10);
+            } else {
+                state.planStartDate = new Date().toISOString().slice(0, 10);
+            }
+        }
+
+        // Set stable form inputs
         document.getElementById('set-exam-date').value = state.examDate;
         document.getElementById('input-dayoff').value = state.dayOffs;
     }
 
-    /* NAVIGAZIONE TAB */
+    /* THEME (DARK MODE) MANAGEMENT */
+    function loadTheme() {
+        const savedTheme = localStorage.getItem('studyTrackerTheme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
+        applyTheme(theme);
+    }
+
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('theme-toggle-btn').innerText = '☀️';
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            document.getElementById('theme-toggle-btn').innerText = '🌙';
+        }
+    }
+
+    function toggleTheme() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const newTheme = isDark ? 'light' : 'dark';
+        applyTheme(newTheme);
+        localStorage.setItem('studyTrackerTheme', newTheme);
+    }
+
+    /* TAB NAVIGATION */
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        
+
         document.getElementById(tabId).classList.add('active');
         event.currentTarget.classList.add('active');
     }
 
-    /* GESTIONE DATA ESAME */
+    /* EXAM DATE MANAGEMENT */
     function saveExamDate() {
         const inputDate = document.getElementById('set-exam-date').value;
         if(!inputDate) return;
@@ -821,69 +1012,69 @@
         renderHistory();
     }
 
-    /* GESTIONE CATEGORIE (AGGIUNGI/RIMUOVI) */
+    /* CATEGORY MANAGEMENT (ADD/REMOVE) */
     function addNewCategory() {
         const nameInput = document.getElementById('new-cat-name');
         const targetInput = document.getElementById('new-cat-target');
-        
+
         const name = nameInput.value.trim();
         const target = parseInt(targetInput.value) || 1;
-        
-        if(!name) { alert("Inserisci un nome valido per la categoria!"); return; }
-        
-        // Genera una chiave id univoca e pulita basata sul nome
+
+        if(!name) { alert("Enter a valid category name!"); return; }
+
+        // Generate a unique, clean id key based on the name
         const id = name.toLowerCase().replace(/[^a-z0-9]/g, "");
-        if(!id) { alert("Nome categoria non valido."); return; }
-        if(state.categories[id]) { alert("Questa categoria esiste già!"); return; }
-        
-        // Inizializza la categoria
+        if(!id) { alert("Invalid category name."); return; }
+        if(state.categories[id]) { alert("This category already exists!"); return; }
+
+        // Initialize the category
         state.categories[id] = { name: name, target: target };
         state.progress[id] = 0;
-        
-        // Aggiorna lo storico esistente inserendo il nuovo campo a 0
+
+        // Update existing history entries by inserting the new field at 0
         state.history.forEach(log => {
             if(log.values && log.values[id] === undefined) {
                 log.values[id] = 0;
             }
         });
-        
+
         saveState();
         updateUI();
         renderHistory();
-        
-        // Svuota i campi
+
+        // Clear the fields
         nameInput.value = '';
         targetInput.value = '10';
-        alert(`Categoria "${name}" aggiunta con successo!`);
+        alert(`Category "${name}" added successfully!`);
     }
 
     function removeCategory(id) {
         if(Object.keys(state.categories).length <= 1) {
-            alert("Devi mantenere almeno una categoria!");
+            alert("You must keep at least one category!");
             return;
         }
-        if(confirm(`Sei sicuro di voler rimuovere la categoria "${state.categories[id].name}"? I progressi correnti verranno persi.`)) {
+        if(confirm(`Are you sure you want to remove the category "${state.categories[id].name}"? Current progress will be lost.`)) {
             delete state.categories[id];
             delete state.progress[id];
-            
-            // Rimuovi la categoria anche dai record storici salvati
+
+            // Also remove the category from saved history records
             state.history.forEach(log => {
                 if(log.values) delete log.values[id];
             });
-            
+
             saveState();
             updateUI();
             renderHistory();
         }
     }
 
-    /* MODIFICA TARGET OBIETTIVI */
+    /* EDIT GOAL TARGETS */
     function saveNewTargets() {
         Object.keys(state.categories).forEach(id => {
             const inputEl = document.getElementById(`set-target-${id}`);
             if(inputEl) {
                 state.categories[id].target = parseInt(inputEl.value) || 1;
-                // Normalizza il progresso attuale per non eccedere il nuovo massimo
+                // Clamp current progress so it doesn't exceed the new maximum
                 if(state.progress[id] > state.categories[id].target) {
                     state.progress[id] = state.categories[id].target;
                 }
@@ -892,62 +1083,98 @@
         saveState();
         updateUI();
         renderHistory();
-        alert("Obiettivi globali aggiornati!");
+        alert("Global goals updated!");
     }
 
-    /* INTERFACCIA DINAMICA E CALCOLI DATA */
+    /* EFFICIENCY KPI: study time / total session time */
+    function calcEfficiency(studySeconds, pauseSeconds) {
+        const total = studySeconds + pauseSeconds;
+        if (total <= 0) return 0;
+        return Math.round((studySeconds / total) * 100);
+    }
+
+    /* DYNAMIC UI AND DATE CALCULATIONS */
     function updateUI() {
         const examDateObj = new Date(state.examDate);
         const todayObj = new Date();
         todayObj.setHours(0,0,0,0);
-        
-        // Scadenza studio impostata al giorno prima dell'esame
+
+        // Study deadline is set to the day before the exam
         const studyEndDateObj = new Date(examDateObj);
         studyEndDateObj.setDate(studyEndDateObj.getDate() - 1);
-        
-        // Formattazione stringhe header
-        const options = { day: 'numeric', month: 'long', year: 'numeric' };
-        const examStr = examDateObj.toLocaleDateString('it-IT', options);
-        const deadlineStr = studyEndDateObj.toLocaleDateString('it-IT', options);
-        document.getElementById('header-dates').innerText = `Scadenza studio: ${deadlineStr} | Esame: ${examStr}`;
-        document.getElementById('date-today').innerText = new Date().toLocaleDateString('it-IT');
 
-        // Calcolo giorni totali rimasti fino all'esame
+        // Header date strings
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        const examStr = examDateObj.toLocaleDateString('en-GB', options);
+        const deadlineStr = studyEndDateObj.toLocaleDateString('en-GB', options);
+        document.getElementById('header-dates').innerText = `Study deadline: ${deadlineStr} | Exam: ${examStr}`;
+        document.getElementById('date-today').innerText = new Date().toLocaleDateString('en-GB');
+
+        // Total days left until the exam
         const diffTime = examDateObj - todayObj;
         const daysLeft = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
         document.getElementById('days-left').innerText = daysLeft;
 
-        // Giorni di studio effettivi (Giorni rimasti - Day offs)
+        // Effective study days (days left - day offs)
         const studyDaysLeft = Math.max(0, daysLeft - state.dayOffs);
         document.getElementById('study-days-left').innerText = studyDaysLeft;
 
-        // 1. Rendering dei contatori grafici nel Tabellone Principale
+        // Average efficiency across all logged history
+        let totalStudy = 0, totalPause = 0;
+        (state.history || []).forEach(entry => {
+            totalStudy += entry.timeSpent || 0;
+            totalPause += entry.pauseTime || 0;
+        });
+        document.getElementById('avg-efficiency').innerText = `${calcEfficiency(totalStudy, totalPause)}%`;
+
+        // Pace reference: how many days have elapsed since the plan started,
+        // compared to the total number of planned study days
+        const planStartObj = new Date(state.planStartDate);
+        planStartObj.setHours(0,0,0,0);
+        const totalPlannedDays = Math.max(1, Math.round((studyEndDateObj - planStartObj) / 86400000) + 1);
+        const elapsedDays = Math.min(totalPlannedDays, Math.max(1, Math.round((todayObj - planStartObj) / 86400000) + 1));
+
+        // 1. Render goal cards in the main dashboard
         const goalsGrid = document.getElementById('goals-grid');
         goalsGrid.innerHTML = '';
-        
+
         Object.keys(state.categories).forEach(id => {
             const cat = state.categories[id];
             const currentVal = state.progress[id] || 0;
             const targetVal = cat.target;
             const percentage = Math.min(100, Math.round((currentVal / targetVal) * 100)) || 0;
 
-            // Logica ritmo ideale
-            let statusText = "Calcolo...";
-            let statusClass = "status-ontrack";
-            
-            if(studyDaysLeft > 0) {
+            // Ahead/behind/on-track schedule logic:
+            // compares actual progress against the progress expected at this
+            // point in the plan (e.g. 3 of 10 done after 1 of 5 days = ahead)
+            const expectedProgress = targetVal * (elapsedDays / totalPlannedDays);
+            const tolerance = Math.max(0.5, targetVal * 0.03);
+            const diff = currentVal - expectedProgress;
+
+            let paceText, paceClass;
+            if (diff > tolerance) {
+                paceText = "🚀 Ahead of schedule";
+                paceClass = "status-ahead";
+            } else if (diff < -tolerance) {
+                paceText = "⚠️ Behind schedule";
+                paceClass = "status-behind";
+            } else {
+                paceText = "✅ On track";
+                paceClass = "status-ontrack";
+            }
+
+            let statusText, statusClass;
+            if (currentVal >= targetVal) {
+                statusText = "Goal completed! 🎉";
+                statusClass = "status-ahead";
+            } else if (studyDaysLeft <= 0) {
+                statusText = "Time's up 🚫";
+                statusClass = "status-behind";
+            } else {
                 const remainingTask = targetVal - currentVal;
                 const idealDailyRate = remainingTask / studyDaysLeft;
-                
-                if (idealDailyRate <= 0) {
-                    statusText = "Obiettivo Completato! 🎉";
-                    statusClass = "status-ahead";
-                } else {
-                    statusText = `Ritmo: ~${idealDailyRate.toFixed(1)} al giorno`;
-                }
-            } else {
-                statusText = currentVal >= targetVal ? "Completato! 🎉" : "Tempo Scaduto 🚫";
-                statusClass = currentVal >= targetVal ? "status-ahead" : "status-behind";
+                statusText = `${paceText} · ~${idealDailyRate.toFixed(1)}/day needed`;
+                statusClass = paceClass;
             }
 
             const card = document.createElement('div');
@@ -968,7 +1195,7 @@
             goalsGrid.appendChild(card);
         });
 
-        // 2. Rendering della lista Gestione Categorie (Impostazioni)
+        // 2. Render the Category Management list (Settings)
         const managerList = document.getElementById('category-manager-list');
         managerList.innerHTML = '';
         Object.keys(state.categories).forEach(id => {
@@ -976,30 +1203,30 @@
             div.className = 'category-item';
             div.innerHTML = `
                 <span><strong>${state.categories[id].name}</strong> (ID: ${id})</span>
-                <button class="btn-delete-cat" onclick="removeCategory('${id}')">Elimina</button>
+                <button class="btn-delete-cat" onclick="removeCategory('${id}')">Delete</button>
             `;
             managerList.appendChild(div);
         });
 
-        // 3. Rendering del Form Modifica Obiettivi Globali
+        // 3. Render the Edit Global Goals form
         const targetsForm = document.getElementById('targets-settings-form');
         targetsForm.innerHTML = '';
         Object.keys(state.categories).forEach(id => {
             const group = document.createElement('div');
             group.className = 'form-group';
             group.innerHTML = `
-                <label for="set-target-${id}">Totale ${state.categories[id].name}:</label>
+                <label for="set-target-${id}">Total ${state.categories[id].name}:</label>
                 <input type="number" id="set-target-${id}" min="1" value="${state.categories[id].target}">
             `;
             targetsForm.appendChild(group);
         });
         const updateBtn = document.createElement('button');
         updateBtn.className = 'btn-block';
-        updateBtn.innerText = 'Aggiorna Obiettivi';
+        updateBtn.innerText = 'Update Goals';
         updateBtn.onclick = saveNewTargets;
         targetsForm.appendChild(updateBtn);
 
-        // 4. Rendering input dinamici nel Form Inserimento Manuale Storico
+        // 4. Render dynamic inputs in the Manual History Entry form
         const manualInputsContainer = document.getElementById('manual-categories-inputs');
         manualInputsContainer.innerHTML = '';
         Object.keys(state.categories).forEach(id => {
@@ -1013,7 +1240,7 @@
         });
     }
 
-    /* CONTATORI SCHEDA GENERALE */
+    /* MAIN DASHBOARD COUNTERS */
     function changeVal(id, amount) {
         const target = state.categories[id].target;
         state.progress[id] = Math.max(0, Math.min(target, (state.progress[id] || 0) + amount));
@@ -1044,9 +1271,9 @@
         updateUI();
     }
 
-    /* TIMER - gestione sessione con studio + pausa */
+    /* TIMER - session management with study + break */
 
-    // Calcola i secondi di studio "vivi" (accumulati + eventuale intervallo in corso)
+    // Computes "live" study seconds (accumulated + current running interval)
     function getCurrentStudySeconds() {
         let total = state.timerAccumulatedSeconds;
         if (state.timerStartTime !== null) {
@@ -1055,7 +1282,7 @@
         return total;
     }
 
-    // Calcola i secondi di pausa "vivi" (accumulati + eventuale intervallo in corso)
+    // Computes "live" break seconds (accumulated + current running interval)
     function getCurrentPauseSeconds() {
         let total = state.pauseAccumulatedSeconds;
         if (state.pauseStartTime !== null) {
@@ -1064,18 +1291,18 @@
         return total;
     }
 
-    // Durata totale sessione = studio + pausa
+    // Total session duration = study + break
     function getCurrentTotalSeconds() {
         return getCurrentStudySeconds() + getCurrentPauseSeconds();
     }
 
-    // Avvia/Termina l'intera sessione
+    // Start/end the whole session
     function toggleSession() {
         if (isEditMode) return;
 
         if (state.sessionStartTime === null) {
-            // AVVIA una nuova sessione: riparte dai valori attuali (0 di default,
-            // oppure quelli eventualmente impostati con "Modifica")
+            // START a new session: continues from the current values (0 by
+            // default, or whatever was set via "Edit")
             state.sessionStartTime = Date.now();
             state.timerStartTime = Date.now();
             state.pauseStartTime = null;
@@ -1084,8 +1311,8 @@
             updateTimerButtons();
             saveState();
         } else {
-            // TERMINA la sessione corrente (sia se in studio, sia se in pausa)
-            if (!confirm("Vuoi terminare la sessione corrente? Studio e pausa verranno consolidati.")) return;
+            // END the current session (whether studying or on a break)
+            if (!confirm("Do you want to end the current session? Study and break time will be consolidated.")) return;
 
             if (state.timerStartTime !== null) {
                 state.timerAccumulatedSeconds += Math.floor((Date.now() - state.timerStartTime) / 1000);
@@ -1099,11 +1326,11 @@
             clearInterval(visualInterval);
             state.sessionStartTime = null;
 
-            // Conserva i valori della sessione appena conclusa per il modale di chiusura
+            // Keep the values from the just-ended session for the closing modal
             pendingLogStudySeconds = state.timerAccumulatedSeconds;
             pendingLogPauseSeconds = state.pauseAccumulatedSeconds;
 
-            // Azzera il timer, pronto per una nuova sessione
+            // Reset the timer, ready for a new session
             state.timerAccumulatedSeconds = 0;
             state.pauseAccumulatedSeconds = 0;
 
@@ -1115,10 +1342,10 @@
         }
     }
 
-    /* MODALE FINE SESSIONE: punteggio previsto (0-30) e note opzionali */
+    /* SESSION-END MODAL: expected score (0-30) and optional notes */
     function openSessionEndModal() {
         document.getElementById('session-end-summary').innerText =
-            `Studio: ${formatHMS(pendingLogStudySeconds)}  |  Pausa: ${formatHMS(pendingLogPauseSeconds)}  |  Totale: ${formatHMS(pendingLogStudySeconds + pendingLogPauseSeconds)}`;
+            `Study: ${formatHMS(pendingLogStudySeconds)}  |  Break: ${formatHMS(pendingLogPauseSeconds)}  |  Total: ${formatHMS(pendingLogStudySeconds + pendingLogPauseSeconds)}`;
         document.getElementById('session-score-input').value = '';
         document.getElementById('session-note-input').value = '';
         document.getElementById('session-end-modal-overlay').style.display = 'flex';
@@ -1134,20 +1361,20 @@
         if (scoreRaw !== '') {
             score = parseInt(scoreRaw);
             if (isNaN(score) || score < 0 || score > 30) {
-                alert("Il punteggio deve essere un numero intero tra 0 e 30 (oppure lascia il campo vuoto).");
+                alert("Score must be an integer between 0 and 30 (or leave the field empty).");
                 return;
             }
         }
         const note = document.getElementById('session-note-input').value.trim();
 
-        // Istantanea del progresso attuale per categoria, come per il resto dello storico
+        // Snapshot of current per-category progress, as with the rest of the history
         let valuesMap = {};
         Object.keys(state.categories).forEach(id => {
             valuesMap[id] = state.progress[id] || 0;
         });
 
         const newLog = {
-            date: new Date().toLocaleDateString('it-IT'),
+            date: new Date().toLocaleDateString('en-GB'),
             timeSpent: pendingLogStudySeconds,
             pauseTime: pendingLogPauseSeconds,
             score: score,
@@ -1165,17 +1392,17 @@
         closeSessionEndModal();
     }
 
-    // Alterna tra "in studio" e "in pausa" all'interno della sessione attiva
+    // Toggles between "studying" and "on a break" within the active session
     function togglePause() {
         if (isEditMode || state.sessionStartTime === null) return;
 
         if (state.timerStartTime !== null) {
-            // Stavamo studiando -> passiamo in pausa
+            // Was studying -> switch to break
             state.timerAccumulatedSeconds += Math.floor((Date.now() - state.timerStartTime) / 1000);
             state.timerStartTime = null;
             state.pauseStartTime = Date.now();
         } else if (state.pauseStartTime !== null) {
-            // Eravamo in pausa -> torniamo a studiare
+            // Was on break -> back to studying
             state.pauseAccumulatedSeconds += Math.floor((Date.now() - state.pauseStartTime) / 1000);
             state.pauseStartTime = null;
             state.timerStartTime = Date.now();
@@ -1191,30 +1418,30 @@
         visualInterval = setInterval(updateAllTimerDisplays, 1000);
     }
 
-    // Aggiorna testo/stile dei bottoni in base allo stato corrente
+    // Updates button text/style based on the current state
     function updateTimerButtons() {
         const mainBtn = document.getElementById('btn-timer-toggle');
         const pauseBtn = document.getElementById('btn-pause-toggle');
         const statusLabel = document.getElementById('session-status-label');
 
         if (state.sessionStartTime === null) {
-            mainBtn.innerText = "Avvia Sessione";
+            mainBtn.innerText = "Start Session";
             mainBtn.className = "timer-btn btn-start";
             pauseBtn.style.display = 'none';
-            statusLabel.innerText = "Sessione non avviata";
+            statusLabel.innerText = "Session not started";
         } else {
-            mainBtn.innerText = "Termina Sessione";
+            mainBtn.innerText = "End Session";
             mainBtn.className = "timer-btn btn-end-session";
             pauseBtn.style.display = 'inline-block';
 
             if (state.timerStartTime !== null) {
-                pauseBtn.innerText = "☕ Pausa";
+                pauseBtn.innerText = "☕ Break";
                 pauseBtn.className = "timer-btn btn-pause";
-                statusLabel.innerText = "📚 In studio...";
+                statusLabel.innerText = "📚 Studying...";
             } else {
-                pauseBtn.innerText = "▶️ Riprendi Studio";
+                pauseBtn.innerText = "▶️ Resume Study";
                 pauseBtn.className = "timer-btn btn-resume-pause";
-                statusLabel.innerText = "☕ In pausa...";
+                statusLabel.innerText = "☕ On break...";
             }
         }
     }
@@ -1227,8 +1454,8 @@
         const pauseBtn = document.getElementById('btn-pause-toggle');
 
         if (!isEditMode) {
-            // Congeliamo il conteggio corrente (senza terminare la sessione) per poter
-            // modificare liberamente sia il tempo di studio sia quello di pausa
+            // Freeze the current count (without ending the session) so both
+            // study time and break time can be freely edited
             editWasSessionActive = (state.sessionStartTime !== null);
             editWasStudying = (state.timerStartTime !== null);
 
@@ -1249,7 +1476,7 @@
             toggleBtn.disabled = true;
             pauseBtn.style.opacity = '0.5';
             pauseBtn.disabled = true;
-            editBtn.innerText = "💾 Salva Tempo";
+            editBtn.innerText = "💾 Save Time";
             editBtn.className = "timer-btn btn-save-time";
 
             let studySeconds = state.timerAccumulatedSeconds;
@@ -1288,11 +1515,11 @@
             toggleBtn.disabled = false;
             pauseBtn.style.opacity = '1';
             pauseBtn.disabled = false;
-            editBtn.innerText = "✏️ Modifica";
+            editBtn.innerText = "✏️ Edit";
             editBtn.className = "timer-btn btn-edit";
 
-            // Se la sessione era attiva prima della modifica, la riprendiamo esattamente
-            // dallo stesso sotto-stato (studio o pausa) in cui si trovava
+            // If the session was active before editing, resume it in exactly
+            // the same sub-state (studying or on break) it was in
             if (editWasSessionActive) {
                 if (editWasStudying) {
                     state.timerStartTime = Date.now();
@@ -1310,7 +1537,7 @@
     }
 
     function resetTimer() {
-        if(confirm("Vuoi azzerare il timer della sessione corrente (studio, pausa e totale)?")) {
+        if(confirm("Do you want to reset the current session timer (study, break, and total)?")) {
             clearInterval(visualInterval);
             state.timerStartTime = null;
             state.timerAccumulatedSeconds = 0;
@@ -1319,13 +1546,13 @@
             state.sessionStartTime = null;
 
             if(isEditMode) {
-                // Usciamo dalla modalità modifica senza applicare i valori nei campi
-                // (già azzerati sopra), evitando di sovrascrivere lo stato appena resettato
+                // Exit edit mode without applying the field values (already
+                // reset above), avoiding overwriting the just-reset state
                 isEditMode = false;
                 document.getElementById('timer-text-container').style.display = 'flex';
                 document.getElementById('timer-input-container').style.display = 'none';
                 const editBtn = document.getElementById('btn-timer-edit');
-                editBtn.innerText = "✏️ Modifica";
+                editBtn.innerText = "✏️ Edit";
                 editBtn.className = "timer-btn btn-edit";
                 document.getElementById('btn-timer-toggle').disabled = false;
                 document.getElementById('btn-pause-toggle').disabled = false;
@@ -1345,15 +1572,20 @@
         return `${format(hrs)}:${format(mins)}:${format(secs)}`;
     }
 
-    // Aggiorna i tre display (studio, pausa, totale sessione)
+    // Updates the four displays (study, break, total session, efficiency)
     function updateAllTimerDisplays() {
         const studyEl = document.getElementById('timer-display-study');
         const pauseEl = document.getElementById('timer-display-pause');
         const totalEl = document.getElementById('timer-display-total');
+        const efficiencyEl = document.getElementById('timer-display-efficiency');
 
-        if (studyEl) studyEl.innerText = formatHMS(getCurrentStudySeconds());
-        if (pauseEl) pauseEl.innerText = formatHMS(getCurrentPauseSeconds());
-        if (totalEl) totalEl.innerText = formatHMS(getCurrentTotalSeconds());
+        const studySecs = getCurrentStudySeconds();
+        const pauseSecs = getCurrentPauseSeconds();
+
+        if (studyEl) studyEl.innerText = formatHMS(studySecs);
+        if (pauseEl) pauseEl.innerText = formatHMS(pauseSecs);
+        if (totalEl) totalEl.innerText = formatHMS(studySecs + pauseSecs);
+        if (efficiencyEl) efficiencyEl.innerText = `${calcEfficiency(studySecs, pauseSecs)}%`;
     }
 
     function formatTime(totalSeconds) {
@@ -1363,15 +1595,15 @@
         return `${hrs}h ${mins}m`;
     }
 
-    /* SALVA RECORD AUTOMATICO */
+    /* AUTOMATIC RECORD SAVE */
     function logTodayProgress() {
-        const dateStr = new Date().toLocaleDateString('it-IT');
+        const dateStr = new Date().toLocaleDateString('en-GB');
         const existingIdx = state.history.findIndex(entry => entry.date === dateStr);
 
         let studySecondsToLog = getCurrentStudySeconds();
         let pauseSecondsToLog = getCurrentPauseSeconds();
 
-        // Mappa dinamicamente i valori delle categorie correnti
+        // Dynamically maps the current category values
         let valuesMap = {};
         Object.keys(state.categories).forEach(id => {
             valuesMap[id] = state.progress[id] || 0;
@@ -1394,11 +1626,11 @@
 
         saveState();
         renderHistory();
-        alert(`Sessione salvata nel registro per il giorno ${dateStr}!`);
+        alert(`Session saved to the log for ${dateStr}!`);
     }
 
-    /* LOGICA INSERIMENTO MANUALE STORICO */
-    /* MODALE AGGIUNTA RECORD MANUALE */
+    /* MANUAL HISTORY ENTRY LOGIC */
+    /* MANUAL RECORD MODAL */
     function openManualEntryModal() {
         document.getElementById('manual-date').valueAsDate = new Date();
         document.getElementById('manual-hours').value = '';
@@ -1420,9 +1652,9 @@
 
     function addManualHistory() {
         const dateInput = document.getElementById('manual-date').value;
-        if(!dateInput) { alert("Inserisci una data valida!"); return; }
-        
-        const formattedDate = new Date(dateInput).toLocaleDateString('it-IT');
+        if(!dateInput) { alert("Please enter a valid date!"); return; }
+
+        const formattedDate = new Date(dateInput).toLocaleDateString('en-GB');
         const hours = parseInt(document.getElementById('manual-hours').value) || 0;
         const minutes = parseInt(document.getElementById('manual-minutes').value) || 0;
         const totalSeconds = (hours * 3600) + (minutes * 60);
@@ -1436,7 +1668,7 @@
         if (scoreRaw !== '') {
             manualScore = parseInt(scoreRaw);
             if (isNaN(manualScore) || manualScore < 0 || manualScore > 30) {
-                alert("Il punteggio deve essere un numero intero tra 0 e 30 (oppure lascia il campo vuoto).");
+                alert("Score must be an integer between 0 and 30 (or leave the field empty).");
                 return;
             }
         }
@@ -1446,7 +1678,7 @@
         Object.keys(state.categories).forEach(id => {
             const inputEl = document.getElementById(`manual-${id}`);
             valuesMap[id] = parseInt(inputEl.value) || 0;
-            // Resetta input campo
+            // Reset field input
             if(inputEl) inputEl.value = 0;
         });
 
@@ -1466,23 +1698,23 @@
         closeManualEntryModal();
     }
 
-    /* RENDERING DINAMICO TABELLA STORICO ED EDIT IN LINEA */
+    /* DYNAMIC HISTORY TABLE RENDERING AND INLINE EDITING */
     function renderHistory() {
         const headerTr = document.getElementById('history-table-header');
         const tbody = document.getElementById('history-table-body');
         const emptyMsg = document.getElementById('empty-message');
-        
-        tbody.innerHTML = '';
-        headerTr.innerHTML = '<th>Data</th><th>Studio</th><th>Pausa</th><th>Sessione Tot.</th><th>Voto</th><th>Note</th>';
 
-        // Genera intestazioni di tabella in base alle categorie attive
+        tbody.innerHTML = '';
+        headerTr.innerHTML = '<th>Date</th><th>Study</th><th>Break</th><th>Total Session</th><th>Efficiency</th><th>Score</th><th>Notes</th>';
+
+        // Generate table headers based on active categories
         Object.keys(state.categories).forEach(id => {
             const th = document.createElement('th');
             th.innerText = state.categories[id].name;
             headerTr.appendChild(th);
         });
         const actionTh = document.createElement('th');
-        actionTh.innerText = "Azioni";
+        actionTh.innerText = "Actions";
         headerTr.appendChild(actionTh);
 
         if(!state.history || state.history.length === 0) {
@@ -1490,14 +1722,15 @@
             document.getElementById('history-table').style.display = 'none';
             return;
         }
-        
+
         emptyMsg.style.display = 'none';
         document.getElementById('history-table').style.display = 'table';
 
         state.history.forEach((entry, index) => {
             const tr = document.createElement('tr');
-            
-            // Se non ha la struttura dati estesa (retrocompatibilità vecchi salvataggi), la normalizza
+
+            // If it lacks the extended data structure (backward-compat with
+            // older saves), normalize it
             if(!entry.values) {
                 entry.values = {
                     domande: entry.domande || 0,
@@ -1506,31 +1739,34 @@
                 };
             }
             if(entry.pauseTime === undefined) {
-                entry.pauseTime = 0; // vecchi salvataggi senza tracciamento pausa
+                entry.pauseTime = 0; // old saves without break-time tracking
             }
             if(entry.score === undefined) entry.score = null;
             if(entry.note === undefined) entry.note = '';
 
+            const entryEfficiency = calcEfficiency(entry.timeSpent, entry.pauseTime);
+
             if(currentlyEditingRowIndex === index) {
-                // MODALITÀ MODIFICA IN LINEA
+                // INLINE EDIT MODE
                 const hrs = Math.floor(entry.timeSpent / 3600);
                 const mins = Math.floor((entry.timeSpent % 3600) / 60);
                 const pHrs = Math.floor(entry.pauseTime / 3600);
                 const pMins = Math.floor((entry.pauseTime % 3600) / 60);
-                
+
                 let htmlContent = `
                     <td><input type="text" id="inline-date-${index}" value="${entry.date}" style="width:90px; font-weight:bold;"></td>
                     <td class="inline-edit-inputs">
-                        <input type="number" id="inline-hrs-${index}" value="${hrs}" style="width:40px; font-size:1rem;">h 
+                        <input type="number" id="inline-hrs-${index}" value="${hrs}" style="width:40px; font-size:1rem;">h
                         <input type="number" id="inline-mins-${index}" value="${mins}" style="width:40px; font-size:1rem;">m
                     </td>
                     <td class="inline-edit-inputs">
-                        <input type="number" id="inline-pause-hrs-${index}" value="${pHrs}" style="width:40px; font-size:1rem;">h 
+                        <input type="number" id="inline-pause-hrs-${index}" value="${pHrs}" style="width:40px; font-size:1rem;">h
                         <input type="number" id="inline-pause-mins-${index}" value="${pMins}" style="width:40px; font-size:1rem;">m
                     </td>
                     <td>${formatTime(entry.timeSpent + entry.pauseTime)}</td>
+                    <td class="efficiency-cell">${entryEfficiency}%</td>
                     <td><input type="number" id="inline-score-${index}" value="${entry.score !== null ? entry.score : ''}" min="0" max="30" style="width:50px;" placeholder="-"></td>
-                    <td><input type="text" id="inline-note-${index}" value="${entry.note.replace(/"/g, '&quot;')}" style="width:120px;" placeholder="(nessuna nota)"></td>
+                    <td><input type="text" id="inline-note-${index}" value="${entry.note.replace(/"/g, '&quot;')}" style="width:120px;" placeholder="(no notes)"></td>
                 `;
 
                 Object.keys(state.categories).forEach(id => {
@@ -1547,7 +1783,7 @@
                 tr.innerHTML = htmlContent;
 
             } else {
-                // MODALITÀ VISUALIZZAZIONE NORMALE
+                // NORMAL DISPLAY MODE
                 const scoreDisplay = entry.score !== null ? `<span class="score-badge">${entry.score}/30</span>` : '—';
                 const noteDisplay = entry.note ? entry.note : '—';
                 let htmlContent = `
@@ -1555,6 +1791,7 @@
                     <td>${formatTime(entry.timeSpent)}</td>
                     <td>${formatTime(entry.pauseTime)}</td>
                     <td>${formatTime(entry.timeSpent + entry.pauseTime)}</td>
+                    <td class="efficiency-cell">${entryEfficiency}%</td>
                     <td>${scoreDisplay}</td>
                     <td class="note-cell" title="${entry.note.replace(/"/g, '&quot;')}">${noteDisplay}</td>
                 `;
@@ -1592,15 +1829,15 @@
         const m = parseInt(document.getElementById(`inline-mins-${index}`).value) || 0;
         const ph = parseInt(document.getElementById(`inline-pause-hrs-${index}`).value) || 0;
         const pm = parseInt(document.getElementById(`inline-pause-mins-${index}`).value) || 0;
-        
-        if(!newDate) { alert("Data non valida!"); return; }
+
+        if(!newDate) { alert("Invalid date!"); return; }
 
         const scoreRaw = document.getElementById(`inline-score-${index}`).value.trim();
         let score = null;
         if (scoreRaw !== '') {
             score = parseInt(scoreRaw);
             if (isNaN(score) || score < 0 || score > 30) {
-                alert("Il punteggio deve essere un numero intero tra 0 e 30 (oppure lascia il campo vuoto).");
+                alert("Score must be an integer between 0 and 30 (or leave the field empty).");
                 return;
             }
         }
@@ -1625,28 +1862,28 @@
     }
 
     function deleteHistoryRow(index) {
-        if(confirm("Vuoi davvero eliminare questa riga dallo storico?")) {
+        if(confirm("Do you really want to delete this row from the history?")) {
             state.history.splice(index, 1);
             saveState();
             renderHistory();
         }
     }
 
-    /* DOWNLOAD IN FORMATO CSV */
+    /* DOWNLOAD AS CSV */
     function downloadCSV() {
         if (!state.history || state.history.length === 0) {
-            alert("Nessun dato nello storico da esportare!");
+            alert("No data in history to export!");
             return;
         }
-        
+
         let csvRows = [];
-        let headers = ["Data", "Studio (secondi)", "Pausa (secondi)", "Sessione Totale (secondi)", "Voto Previsto (0-30)", "Note"];
+        let headers = ["Date", "Study (seconds)", "Break (seconds)", "Total Session (seconds)", "Efficiency (%)", "Expected Score (0-30)", "Notes"];
         let catIds = Object.keys(state.categories);
-        
+
         catIds.forEach(id => {
             headers.push(`"${state.categories[id].name}"`);
         });
-        csvRows.push(headers.join(";")); 
+        csvRows.push(headers.join(";"));
 
         state.history.forEach(entry => {
             if(!entry.values) {
@@ -1664,6 +1901,7 @@
                 entry.timeSpent,
                 entry.pauseTime,
                 entry.timeSpent + entry.pauseTime,
+                calcEfficiency(entry.timeSpent, entry.pauseTime),
                 entry.score !== null ? entry.score : '',
                 `"${entry.note.replace(/"/g, '""')}"`
             ];
@@ -1680,7 +1918,7 @@
         if (link.download !== undefined) {
             let url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
-            link.setAttribute("download", "storico_sessioni_studio.csv");
+            link.setAttribute("download", "study_session_history.csv");
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
@@ -1688,15 +1926,16 @@
         }
     }
 
-    /* RESET GENERALE */
+    /* FULL RESET */
     function resetData() {
-        if(confirm("ATTENZIONE: Questo resetterà tutti i dati di studio, i timer, lo storico e ripristinerà le impostazioni iniziali. Continuare?")) {
+        if(confirm("WARNING: This will reset all study data, timers, history, and restore initial settings. Continue?")) {
             localStorage.removeItem('studyTrackerStateV8_Dinamico');
             clearInterval(visualInterval);
             state = JSON.parse(JSON.stringify(defaultState));
+            state.planStartDate = new Date().toISOString().slice(0, 10);
             document.getElementById('set-exam-date').value = state.examDate;
             document.getElementById('input-dayoff').value = state.dayOffs;
-            
+
             if(isEditMode) toggleEditMode();
 
             updateTimerButtons();
