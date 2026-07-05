@@ -38,4 +38,4 @@ All data is automatically saved in the browser (localStorage), so everything is 
 
 ## To add
 
-- Animation for efficiency
+- Consistent text formatting, sizes

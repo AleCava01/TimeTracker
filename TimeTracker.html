@@ -234,7 +234,6 @@
         #timer-block-study .timer-display-value { color: var(--primary); font-size: 2.4rem; }
         #timer-block-pause .timer-display-value { color: var(--warning); }
         #timer-block-total .timer-display-value { color: var(--dark-blue); }
-        #timer-block-efficiency .timer-display-value { color: var(--success); }
         .btn-end-session { background-color: var(--danger); color: white; }
         .btn-resume-pause { background-color: var(--success); color: white; }
 
@@ -343,6 +342,34 @@
             transition: opacity 0.2s;
             font-family: inherit;
         }
+        .gauge-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .gauge-svg {
+            width: 110px;
+            height: auto;
+            overflow: visible;
+        }
+        .gauge-needle {
+            transform-box: view-box;
+            transform-origin: 60px 65px;
+            transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .gauge-value {
+            font-size: 1.5rem;
+            font-family: monospace;
+            font-weight: bold;
+            transition: color 0.4s ease;
+        }
+        .gauge-tick-label {
+            font-size: 7px;
+            fill: var(--muted-text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         .btn-start { background-color: var(--primary); color: white; }
         .btn-pause { background-color: var(--warning); color: #333; }
         .btn-edit { background-color: #34495e; color: white; }
@@ -641,6 +668,8 @@
             .timer-display-value { font-size: 1.3rem; }
             #timer-block-study .timer-display-value { font-size: 1.8rem; }
             .timer-breakdown { gap: 14px; }
+            .gauge-svg { width: 88px; }
+            .gauge-value { font-size: 1.2rem; }
             .timer-inputs-edit { gap: 16px; }
             .timer-btn { padding: 9px 14px; font-size: 0.9rem; margin: 4px 3px; }
             .setup-card { flex-direction: column; align-items: stretch; text-align: center; }
@@ -697,7 +726,23 @@
                 </div>
                 <div class="timer-block" id="timer-block-efficiency">
                     <span class="timer-label">Efficiency</span>
-                    <span class="timer-display-value" id="timer-display-efficiency">0%</span>
+                    <div class="gauge-wrap">
+                        <svg class="gauge-svg" viewBox="0 0 120 70">
+                            <defs>
+                                <linearGradient id="gaugeGradient-session" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color: var(--danger)"/>
+                                    <stop offset="50%" style="stop-color: var(--warning)"/>
+                                    <stop offset="100%" style="stop-color: var(--success)"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M10,65 A50,50 0 0 1 110,65" fill="none" stroke="url(#gaugeGradient-session)" stroke-width="10" stroke-linecap="round"/>
+                            <text x="10" y="65" class="gauge-tick-label" text-anchor="middle" dy="12">0</text>
+                            <text x="110" y="65" class="gauge-tick-label" text-anchor="middle" dy="12">100</text>
+                            <line id="gauge-needle-session" class="gauge-needle" x1="60" y1="65" x2="60" y2="25" style="stroke: var(--dark-blue); stroke-width: 3px; stroke-linecap: round; transform: rotate(-90deg);"/>
+                            <circle cx="60" cy="65" r="5" style="fill: var(--dark-blue)"/>
+                        </svg>
+                        <div class="gauge-value" id="gauge-value-session">0%</div>
+                    </div>
                 </div>
             </div>
             <div id="session-status-label" style="font-size: 0.85rem; font-weight: bold; color: var(--muted-text); margin-bottom: 10px;">Session not started</div>
@@ -1091,6 +1136,26 @@
         const total = studySeconds + pauseSeconds;
         if (total <= 0) return 0;
         return Math.round((studySeconds / total) * 100);
+    }
+
+    // Drives the animated speedometer-style gauge: rotates the needle and
+    // color-codes the readout (red / yellow / green) based on the value
+    function gaugeColorFor(percentage) {
+        if (percentage >= 75) return 'var(--success)';
+        if (percentage >= 50) return 'var(--warning)';
+        return 'var(--danger)';
+    }
+
+    function updateEfficiencyGauge(prefix, percentage) {
+        const clamped = Math.max(0, Math.min(100, percentage));
+        const angle = -90 + (clamped / 100) * 180; // -90deg = 0%, +90deg = 100%
+        const needle = document.getElementById(`gauge-needle-${prefix}`);
+        const valueEl = document.getElementById(`gauge-value-${prefix}`);
+        if (needle) needle.style.transform = `rotate(${angle}deg)`;
+        if (valueEl) {
+            valueEl.innerText = `${Math.round(clamped)}%`;
+            valueEl.style.color = gaugeColorFor(clamped);
+        }
     }
 
     /* DYNAMIC UI AND DATE CALCULATIONS */
@@ -1572,12 +1637,12 @@
         return `${format(hrs)}:${format(mins)}:${format(secs)}`;
     }
 
-    // Updates the four displays (study, break, total session, efficiency)
+    // Updates the three text displays (study, break, total session) plus
+    // the animated efficiency gauge
     function updateAllTimerDisplays() {
         const studyEl = document.getElementById('timer-display-study');
         const pauseEl = document.getElementById('timer-display-pause');
         const totalEl = document.getElementById('timer-display-total');
-        const efficiencyEl = document.getElementById('timer-display-efficiency');
 
         const studySecs = getCurrentStudySeconds();
         const pauseSecs = getCurrentPauseSeconds();
@@ -1585,7 +1650,7 @@
         if (studyEl) studyEl.innerText = formatHMS(studySecs);
         if (pauseEl) pauseEl.innerText = formatHMS(pauseSecs);
         if (totalEl) totalEl.innerText = formatHMS(studySecs + pauseSecs);
-        if (efficiencyEl) efficiencyEl.innerText = `${calcEfficiency(studySecs, pauseSecs)}%`;
+        updateEfficiencyGauge('session', calcEfficiency(studySecs, pauseSecs));
     }
 
     function formatTime(totalSeconds) {
