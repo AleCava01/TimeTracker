@@ -91,8 +91,17 @@
             margin-bottom: 20px;
         }
 
-        h1 { margin: 0 0 5px 0; color: var(--dark-blue); }
+        h1 { margin: 0; color: var(--dark-blue); }
         #header-dates { color: var(--muted-text); margin: 0; }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        .brand .logo { flex-shrink: 0; filter: drop-shadow(0 2px 3px var(--shadow)); }
 
         /* Top bar: tab navigation + theme toggle */
         .top-bar {
@@ -656,6 +665,102 @@
 
         .efficiency-cell { font-weight: bold; }
 
+        /* Daily dynamic tasklist */
+        .tasklist-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px var(--shadow);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--warning);
+        }
+        .tasklist-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .tasklist-header h2 { margin: 0; font-size: 1.1rem; color: var(--dark-blue); }
+        .tasklist-subtitle { font-size: 0.75rem; font-weight: normal; color: var(--muted-text); }
+        .tasklist-progress {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--muted-text);
+            background: var(--light-blue);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .tasklist-add-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .tasklist-add-row input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background: var(--input-bg);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        .btn-add-task {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .btn-add-task:hover { opacity: 0.9; }
+        .tasklist-items {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .tasklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border: 1px solid var(--row-border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-color);
+        }
+        .tasklist-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+        .tasklist-item-text {
+            flex: 1;
+            word-break: break-word;
+        }
+        .tasklist-item.done .tasklist-item-text {
+            text-decoration: line-through;
+            color: var(--muted-text);
+        }
+        .btn-delete-task {
+            background: transparent;
+            border: none;
+            color: var(--muted-text);
+            cursor: pointer;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .btn-delete-task:hover { color: var(--danger); }
+
         /* Responsive tweaks for mobile */
         @media (max-width: 640px) {
             body { padding: 10px; }
@@ -687,7 +792,17 @@
 
 <div class="container">
     <header>
-        <h1>Study Tracker Pro</h1>
+        <div class="brand">
+            <svg class="logo" width="40" height="40" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Study Tracker Pro logo">
+                <circle cx="24" cy="24" r="22" fill="var(--primary)"/>
+                <path d="M24 12 a12 12 0 1 1 -8.49 3.51" fill="none" stroke="var(--bg-color)" stroke-width="3.4" stroke-linecap="round"/>
+                <polygon points="24,3 27.5,10.5 19.8,10" fill="var(--bg-color)"/>
+                <circle cx="24" cy="24" r="2.4" fill="var(--bg-color)"/>
+                <line x1="24" y1="24" x2="24" y2="15.5" stroke="var(--bg-color)" stroke-width="2.4" stroke-linecap="round"/>
+                <line x1="24" y1="24" x2="29.5" y2="26.5" stroke="var(--bg-color)" stroke-width="2.4" stroke-linecap="round"/>
+            </svg>
+            <h1>Study Tracker Pro</h1>
+        </div>
         <p id="header-dates">Study deadline: -- | Exam: --</p>
     </header>
 
@@ -772,6 +887,19 @@
                 <button class="timer-btn btn-edit" id="btn-timer-edit" onclick="toggleEditMode()">✏️ Edit</button>
                 <button class="timer-btn btn-reset-timer" onclick="resetTimer()">Reset Timer</button>
             </div>
+        </div>
+
+        <div class="tasklist-card">
+            <div class="tasklist-header">
+                <h2>📝 Today's Tasklist <span class="tasklist-subtitle">(resets every day)</span></h2>
+                <span class="tasklist-progress" id="tasklist-progress">0/0 done</span>
+            </div>
+            <div class="tasklist-add-row">
+                <input type="text" id="new-task-input" placeholder="Add a task for today..." onkeydown="if(event.key==='Enter'){addTask();}">
+                <button class="btn-add-task" onclick="addTask()">➕ Add</button>
+            </div>
+            <ul class="tasklist-items" id="tasklist-items"></ul>
+            <div id="tasklist-empty" class="empty-history" style="display:none;">No tasks for today yet. Add one above!</div>
         </div>
 
         <div class="setup-card">
@@ -950,7 +1078,8 @@
         pauseAccumulatedSeconds: 0,
         pauseStartTime: null,
         sessionStartTime: null,
-        history: []
+        history: [],
+        dailyTasklist: { date: null, tasks: [] } // temporary, resets automatically each day
     };
 
     let state = JSON.parse(JSON.stringify(defaultState));
@@ -968,6 +1097,8 @@
         loadState();
         updateUI();
         renderHistory();
+        ensureDailyTasklist();
+        renderTasklist();
 
         if (state.sessionStartTime !== null) {
             startVisualInterval();
@@ -975,6 +1106,12 @@
         } else {
             updateAllTimerDisplays();
         }
+
+        // Periodically check for day rollover so the tasklist resets on its own
+        // if the app is left open past midnight
+        setInterval(() => {
+            if (ensureDailyTasklist()) renderTasklist();
+        }, 60000);
     };
 
     function saveState() {
@@ -1158,9 +1295,18 @@
         }
     }
 
+    /* Parses a "YYYY-MM-DD" string as a LOCAL midnight date instead of UTC.
+       new Date("YYYY-MM-DD") parses as UTC midnight, which - depending on the
+       user's timezone offset - can land on the previous/next local day and
+       push day-difference calculations off by one. This avoids that. */
+    function parseLocalDate(dateStr) {
+        const [y, m, d] = dateStr.split('-').map(Number);
+        return new Date(y, m - 1, d);
+    }
+
     /* DYNAMIC UI AND DATE CALCULATIONS */
     function updateUI() {
-        const examDateObj = new Date(state.examDate);
+        const examDateObj = parseLocalDate(state.examDate);
         const todayObj = new Date();
         todayObj.setHours(0,0,0,0);
 
@@ -1194,7 +1340,7 @@
 
         // Pace reference: how many days have elapsed since the plan started,
         // compared to the total number of planned study days
-        const planStartObj = new Date(state.planStartDate);
+        const planStartObj = parseLocalDate(state.planStartDate);
         planStartObj.setHours(0,0,0,0);
         const totalPlannedDays = Math.max(1, Math.round((studyEndDateObj - planStartObj) / 86400000) + 1);
         const elapsedDays = Math.min(totalPlannedDays, Math.max(1, Math.round((todayObj - planStartObj) / 86400000) + 1));
@@ -1991,6 +2137,87 @@
         }
     }
 
+    /* DAILY DYNAMIC TASKLIST (temporary - auto-resets each day, not saved to history) */
+    function todayDateStr() {
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    // Returns true if the tasklist was (re)initialized, e.g. because the day changed
+    function ensureDailyTasklist() {
+        const today = todayDateStr();
+        if (!state.dailyTasklist || state.dailyTasklist.date !== today) {
+            state.dailyTasklist = { date: today, tasks: [] };
+            saveState();
+            return true;
+        }
+        return false;
+    }
+
+    function addTask() {
+        const input = document.getElementById('new-task-input');
+        const text = input.value.trim();
+        if (!text) return;
+
+        ensureDailyTasklist();
+        state.dailyTasklist.tasks.push({
+            id: Date.now() + Math.floor(Math.random() * 1000),
+            text: text,
+            done: false
+        });
+        input.value = '';
+        saveState();
+        renderTasklist();
+        input.focus();
+    }
+
+    function toggleTask(id) {
+        ensureDailyTasklist();
+        const task = state.dailyTasklist.tasks.find(t => t.id === id);
+        if (task) task.done = !task.done;
+        saveState();
+        renderTasklist();
+    }
+
+    function deleteTask(id) {
+        ensureDailyTasklist();
+        state.dailyTasklist.tasks = state.dailyTasklist.tasks.filter(t => t.id !== id);
+        saveState();
+        renderTasklist();
+    }
+
+    function renderTasklist() {
+        ensureDailyTasklist();
+        const list = document.getElementById('tasklist-items');
+        const emptyMsg = document.getElementById('tasklist-empty');
+        const progressEl = document.getElementById('tasklist-progress');
+        const tasks = state.dailyTasklist.tasks;
+
+        list.innerHTML = '';
+
+        if (tasks.length === 0) {
+            emptyMsg.style.display = 'block';
+        } else {
+            emptyMsg.style.display = 'none';
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = 'tasklist-item' + (task.done ? ' done' : '');
+                li.innerHTML = `
+                    <input type="checkbox" ${task.done ? 'checked' : ''} onchange="toggleTask(${task.id})">
+                    <span class="tasklist-item-text">${task.text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</span>
+                    <button class="btn-delete-task" onclick="deleteTask(${task.id})" title="Delete task">🗑️</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        const doneCount = tasks.filter(t => t.done).length;
+        progressEl.innerText = `${doneCount}/${tasks.length} done`;
+    }
+
     /* FULL RESET */
     function resetData() {
         if(confirm("WARNING: This will reset all study data, timers, history, and restore initial settings. Continue?")) {
@@ -2008,6 +2235,8 @@
             saveState();
             updateUI();
             renderHistory();
+            ensureDailyTasklist();
+            renderTasklist();
         }
     }
 </script>

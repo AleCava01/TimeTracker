@@ -39,5 +39,4 @@ All data is automatically saved in the browser (localStorage), so everything is 
 ## To add
 
 - Consistent text formatting, sizes
-- Counter giorni studio è avanti di uno.
 - Logo
