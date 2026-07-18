@@ -4,67 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Tracker Pro - Total Control</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%237c5cff'/%3E%3Cstop offset='100%25' stop-color='%2317c3b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='24' cy='24' r='22' fill='url(%23g)'/%3E%3Cpath d='M24 12 a12 12 0 1 1 -8.49 3.51' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round'/%3E%3Cpolygon points='24,3 27.5,10.5 19.8,10' fill='white'/%3E%3Ccircle cx='24' cy='24' r='2.4' fill='white'/%3E%3Cline x1='24' y1='24' x2='24' y2='15.5' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3Cline x1='24' y1='24' x2='29.5' y2='26.5' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
     <style>
         :root {
-            --bg-color: #f4f7f6;
+            --bg-color: #f3f5fb;
             --card-bg: #ffffff;
-            --text-color: #333333;
-            --primary: #4a90e2;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --warning: #f1c40f;
-            --dark-blue: #2c3e50;
-            --light-blue: #ecf0f1;
+            --text-color: #2c2f3a;
+            --primary: #6c5ce7;
+            --primary-light: #8a7dfa;
+            --accent: #17c3b2;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f5a524;
+            --dark-blue: #241f47;
+            --light-blue: #eef0fb;
 
-            --border-color: #bdc3c7;
-            --muted-text: #7f8c8d;
-            --label-text: #555555;
-            --shadow: rgba(0,0,0,0.05);
-            --shadow-strong: rgba(0,0,0,0.15);
-            --shadow-modal: rgba(0,0,0,0.25);
-            --overlay-bg: rgba(0,0,0,0.5);
-            --table-header-bg: #f8fafc;
-            --table-header-text: #64748b;
-            --row-border: #e2e8f0;
-            --row-hover: #f1f5f9;
-            --btn-neutral-bg: #ecf0f1;
-            --btn-neutral-hover: #bdc3c7;
-            --tab-inactive-bg: #bdc3c7;
+            --border-color: #d7dae6;
+            --muted-text: #7c7f93;
+            --label-text: #4b4e5f;
+            --shadow: rgba(76, 61, 143, 0.08);
+            --shadow-strong: rgba(76, 61, 143, 0.22);
+            --shadow-modal: rgba(30, 20, 70, 0.28);
+            --overlay-bg: rgba(20, 15, 45, 0.55);
+            --table-header-bg: #f6f5ff;
+            --table-header-text: #6b6f8a;
+            --row-border: #ececf7;
+            --row-hover: #f5f4ff;
+            --btn-neutral-bg: #eceefa;
+            --btn-neutral-hover: #d9dcf2;
+            --tab-inactive-bg: #c9cbe0;
             --input-bg: #ffffff;
-            --disabled-bg: #e2e8f0;
-            --score-badge-bg: rgba(74, 144, 226, 0.15);
-            --radius: 12px;
-            --radius-sm: 6px;
+            --disabled-bg: #e6e8f5;
+            --score-badge-bg: rgba(108, 92, 231, 0.15);
+            --gradient-brand: linear-gradient(135deg, #7c5cff 0%, #17c3b2 100%);
+            --gradient-warm: linear-gradient(135deg, #f5a524 0%, #ef4444 100%);
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.45);
+            --radius: 14px;
+            --radius-sm: 8px;
         }
 
         [data-theme="dark"] {
-            --bg-color: #10151f;
-            --card-bg: #1c2432;
-            --text-color: #e2e8f0;
-            --primary: #5b9de3;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --warning: #f1c40f;
-            --dark-blue: #eef2f5;
-            --light-blue: #263043;
+            --bg-color: #0e0d1a;
+            --card-bg: #191830;
+            --text-color: #e7e6f5;
+            --primary: #9c8cff;
+            --primary-light: #b6a8ff;
+            --accent: #2ee6c8;
+            --success: #34d67f;
+            --danger: #ff6b6b;
+            --warning: #ffbb4d;
+            --dark-blue: #f1eefc;
+            --light-blue: #262244;
 
-            --border-color: #3a4657;
-            --muted-text: #94a3b8;
-            --label-text: #b8c2cf;
-            --shadow: rgba(0,0,0,0.3);
-            --shadow-strong: rgba(0,0,0,0.45);
-            --shadow-modal: rgba(0,0,0,0.6);
-            --overlay-bg: rgba(0,0,0,0.65);
-            --table-header-bg: #182131;
-            --table-header-text: #94a3b8;
-            --row-border: #2b3648;
-            --row-hover: #232e40;
-            --btn-neutral-bg: #2a3648;
-            --btn-neutral-hover: #3a4657;
-            --tab-inactive-bg: #2a3648;
-            --input-bg: #202a3a;
-            --disabled-bg: #2b3648;
-            --score-badge-bg: rgba(91, 157, 227, 0.2);
+            --border-color: #362f5c;
+            --muted-text: #a29ecb;
+            --label-text: #c6c1ec;
+            --shadow: rgba(0,0,0,0.35);
+            --shadow-strong: rgba(0,0,0,0.5);
+            --shadow-modal: rgba(0,0,0,0.65);
+            --overlay-bg: rgba(6,4,20,0.7);
+            --table-header-bg: #1e1b3a;
+            --table-header-text: #a29ecb;
+            --row-border: #2b2650;
+            --row-hover: #221f42;
+            --btn-neutral-bg: #262244;
+            --btn-neutral-hover: #362f5c;
+            --tab-inactive-bg: #262244;
+            --input-bg: #201d3d;
+            --disabled-bg: #2b2650;
+            --score-badge-bg: rgba(156, 140, 255, 0.25);
+            --gradient-brand: linear-gradient(135deg, #9c8cff 0%, #2ee6c8 100%);
+            --gradient-warm: linear-gradient(135deg, #ffbb4d 0%, #ff6b6b 100%);
+            --glass-bg: rgba(25, 24, 48, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; }
@@ -72,6 +85,10 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 8% 0%, rgba(124, 92, 255, 0.16), transparent 42%),
+                radial-gradient(circle at 95% 12%, rgba(23, 195, 178, 0.14), transparent 40%);
+            background-attachment: fixed;
             color: var(--text-color);
             margin: 0;
             padding: 20px;
@@ -91,8 +108,16 @@
             margin-bottom: 20px;
         }
 
-        h1 { margin: 0; color: var(--dark-blue); }
-        #header-dates { color: var(--muted-text); margin: 0; }
+        h1 {
+            margin: 0;
+            background: var(--gradient-brand);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+        }
+        #header-dates { color: var(--muted-text); margin: 0; font-weight: 500; }
 
         .brand {
             display: flex;
@@ -127,18 +152,19 @@
             padding: 12px 24px;
             font-size: 1rem;
             font-weight: bold;
-            border-radius: var(--radius-sm);
+            border-radius: 999px;
             cursor: pointer;
             transition: all 0.2s ease;
             font-family: inherit;
         }
+        .tab-btn:hover:not(.active) { transform: translateY(-1px); filter: brightness(1.05); }
 
         .tab-btn.active {
-            background-color: var(--dark-blue);
-            color: var(--bg-color);
-            box-shadow: 0 4px 6px var(--shadow-strong);
+            background: var(--gradient-brand);
+            color: #ffffff;
+            box-shadow: 0 6px 14px var(--shadow-strong);
         }
-        [data-theme="dark"] .tab-btn.active { color: #10151f; }
+        [data-theme="dark"] .tab-btn.active { color: #0e0d1a; }
 
         .theme-toggle-btn {
             background: var(--card-bg);
@@ -154,8 +180,9 @@
             justify-content: center;
             box-shadow: 0 2px 4px var(--shadow);
             flex-shrink: 0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .theme-toggle-btn:hover { opacity: 0.85; }
+        .theme-toggle-btn:hover { transform: rotate(15deg) scale(1.08); box-shadow: 0 4px 10px var(--shadow-strong); }
 
         .tab-content {
             display: none;
@@ -166,9 +193,9 @@
         }
 
         .info-panel {
-            background: var(--dark-blue);
-            color: var(--bg-color);
-            padding: 15px 20px;
+            background: var(--gradient-brand);
+            color: #ffffff;
+            padding: 18px 20px;
             border-radius: var(--radius);
             margin-bottom: 25px;
             display: flex;
@@ -176,14 +203,23 @@
             flex-wrap: wrap;
             gap: 15px;
             text-align: center;
+            box-shadow: 0 8px 20px var(--shadow-strong);
         }
-        [data-theme="dark"] .info-panel { color: #10151f; }
+
+        .info-box {
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0.92;
+            letter-spacing: 0.2px;
+        }
 
         .info-box span {
             display: block;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: bold;
-            color: #1abc9c;
+            color: #ffffff;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            margin-top: 2px;
         }
 
         /* Timer section */
@@ -191,7 +227,7 @@
             background: var(--card-bg);
             padding: 20px;
             border-radius: var(--radius);
-            box-shadow: 0 4px 6px var(--shadow);
+            box-shadow: 0 6px 18px var(--shadow);
             margin-bottom: 25px;
             text-align: center;
             border-left: 5px solid var(--primary);
@@ -263,7 +299,9 @@
             padding: 25px;
             max-width: 450px;
             width: 100%;
-            box-shadow: 0 10px 30px var(--shadow-modal);
+            box-shadow: 0 20px 50px var(--shadow-modal);
+            border-top: 4px solid transparent;
+            border-image: var(--gradient-brand) 1;
         }
         .modal-card h2 { margin-top: 0; color: var(--dark-blue); text-align: center; }
         .modal-summary {
@@ -348,7 +386,7 @@
             border-radius: var(--radius-sm);
             cursor: pointer;
             margin: 0 5px;
-            transition: opacity 0.2s;
+            transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
             font-family: inherit;
         }
         .gauge-wrap {
@@ -379,13 +417,14 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .btn-start { background-color: var(--primary); color: white; }
-        .btn-pause { background-color: var(--warning); color: #333; }
+        .btn-start { background: var(--gradient-brand); color: white; }
+        .btn-pause { background-color: var(--warning); color: #2c2f3a; }
         .btn-edit { background-color: #34495e; color: white; }
         .btn-save-time { background-color: var(--success); color: white; }
         .btn-reset-timer { background-color: var(--btn-neutral-bg); color: var(--text-color); }
-        .timer-btn:hover { opacity: 0.9; }
-        .timer-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-float { background: var(--card-bg); color: var(--primary); border: 1px solid var(--primary); }
+        .timer-btn:hover { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 4px 10px var(--shadow-strong); }
+        .timer-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
         .grid {
             display: grid;
@@ -398,13 +437,25 @@
             background: var(--card-bg);
             padding: 20px;
             border-radius: var(--radius);
-            box-shadow: 0 4px 6px var(--shadow);
+            box-shadow: 0 6px 16px var(--shadow);
             text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-top: 3px solid transparent;
+            border-image: var(--gradient-brand) 1;
         }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 22px var(--shadow-strong); }
 
         .card h3 { margin-top: 0; color: var(--muted-text); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        .counter { font-size: 2.2rem; font-weight: bold; margin: 10px 0; color: var(--dark-blue); }
+        .counter {
+            font-size: 2.4rem;
+            font-weight: bold;
+            margin: 10px 0;
+            background: var(--gradient-brand);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
 
         .controls button, .day-off-controls button {
             background: var(--btn-neutral-bg);
@@ -449,7 +500,7 @@
             background: var(--card-bg);
             padding: 20px;
             border-radius: var(--radius);
-            box-shadow: 0 4px 6px var(--shadow);
+            box-shadow: 0 6px 16px var(--shadow);
             margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
@@ -469,10 +520,12 @@
             overflow: hidden;
         }
         .progress-bar {
-            background: var(--primary);
+            background: var(--gradient-brand);
             height: 100%;
             width: 0%;
-            transition: width 0.3s ease;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 8px var(--shadow-strong);
         }
 
         /* Settings sections */
@@ -480,10 +533,10 @@
             background: var(--card-bg);
             padding: 25px;
             border-radius: var(--radius);
-            box-shadow: 0 4px 6px var(--shadow);
+            box-shadow: 0 6px 16px var(--shadow);
             margin-bottom: 25px;
         }
-        .settings-section h2 { margin-top: 0; color: var(--dark-blue); font-size: 1.3rem; border-bottom: 2px solid var(--light-blue); padding-bottom: 8px;}
+        .settings-section h2 { margin-top: 0; color: var(--dark-blue); font-size: 1.3rem; border-bottom: 2px solid var(--accent); padding-bottom: 8px; display: inline-block; }
 
         .settings-form {
             display: grid;
@@ -517,7 +570,7 @@
         .btn-block {
             grid-column: 1 / -1;
             padding: 12px;
-            background-color: var(--primary);
+            background: var(--gradient-brand);
             color: white;
             border: none;
             border-radius: var(--radius-sm);
@@ -525,8 +578,9 @@
             font-weight: bold;
             cursor: pointer;
             font-family: inherit;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .btn-block:hover { opacity: 0.9; }
+        .btn-block:hover { transform: translateY(-1px); box-shadow: 0 6px 14px var(--shadow-strong); }
 
         /* Dynamic category management */
         .category-manager-list {
@@ -561,7 +615,7 @@
             background: var(--card-bg);
             padding: 25px;
             border-radius: var(--radius);
-            box-shadow: 0 4px 6px var(--shadow);
+            box-shadow: 0 6px 18px var(--shadow);
             margin-top: 25px;
         }
 
@@ -584,7 +638,7 @@
         }
 
         .add-record-btn {
-            background: var(--primary);
+            background: var(--gradient-brand);
             color: white;
             border: none;
             padding: 8px 16px;
@@ -592,10 +646,10 @@
             font-size: 0.9rem;
             font-weight: bold;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             font-family: inherit;
         }
-        .add-record-btn:hover { opacity: 0.9; }
+        .add-record-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 14px var(--shadow-strong); }
 
         .btn-log {
             background-color: var(--success);
@@ -623,7 +677,8 @@
             border-bottom: 1px solid var(--row-border);
         }
 
-        th { background-color: var(--table-header-bg); color: var(--table-header-text); font-size: 0.9rem; text-transform: uppercase; }
+        th { background-color: var(--table-header-bg); color: var(--table-header-text); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 2px solid var(--primary); }
+        tr { transition: background-color 0.15s ease; }
         tr:hover { background-color: var(--row-hover); }
 
         .table-actions button {
@@ -660,20 +715,89 @@
             font-size: 0.8rem;
             font-family: inherit;
         }
-        .reset-btn:hover { background: #e74c3c; color: white; border-color: #e74c3c; }
+        .reset-btn:hover { background: var(--danger); color: white; border-color: var(--danger); }
         .empty-history { text-align: center; color: var(--muted-text); padding: 20px 0; font-style: italic; }
 
         .efficiency-cell { font-weight: bold; }
 
-        /* Daily dynamic tasklist */
-        .tasklist-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: var(--radius);
-            box-shadow: 0 4px 6px var(--shadow);
-            margin-bottom: 25px;
-            border-left: 5px solid var(--warning);
+        /* Daily dynamic tasklist — floating glass dock, docked to the right edge */
+        .tasklist-dock {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 58px;
+            max-height: 82vh;
+            display: flex;
+            align-items: stretch;
+            z-index: 600;
+            overflow: hidden;
+            border-radius: 20px 0 0 20px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-right: none;
+            box-shadow: -10px 12px 34px var(--shadow-strong);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+            cursor: pointer;
         }
+        .tasklist-dock:hover,
+        .tasklist-dock.pinned {
+            width: min(360px, 88vw);
+            cursor: default;
+            box-shadow: -14px 18px 44px var(--shadow-strong);
+        }
+
+        .tasklist-handle {
+            flex-shrink: 0;
+            width: 58px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 18px 0;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            color: var(--primary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            user-select: none;
+        }
+        .tasklist-handle .handle-icon {
+            writing-mode: horizontal-tb;
+            font-size: 1.3rem;
+        }
+        .tasklist-handle .handle-badge {
+            writing-mode: horizontal-tb;
+            background: var(--gradient-brand);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 7px;
+            border-radius: 20px;
+            letter-spacing: 0;
+        }
+
+        .tasklist-panel {
+            flex: 1;
+            min-width: 290px;
+            padding: 20px 20px 20px 6px;
+            overflow-y: auto;
+            opacity: 0;
+            transform: translateX(6px);
+            transition: opacity 0.25s ease 0.08s, transform 0.25s ease 0.08s;
+            cursor: default;
+        }
+        .tasklist-dock:hover .tasklist-panel,
+        .tasklist-dock.pinned .tasklist-panel {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
         .tasklist-header {
             display: flex;
             align-items: center;
@@ -682,15 +806,16 @@
             gap: 8px;
             margin-bottom: 12px;
         }
-        .tasklist-header h2 { margin: 0; font-size: 1.1rem; color: var(--dark-blue); }
-        .tasklist-subtitle { font-size: 0.75rem; font-weight: normal; color: var(--muted-text); }
+        .tasklist-header h2 { margin: 0; font-size: 1.05rem; color: var(--dark-blue); white-space: nowrap; }
+        .tasklist-subtitle { font-size: 0.72rem; font-weight: normal; color: var(--muted-text); display: block; }
         .tasklist-progress {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: bold;
-            color: var(--muted-text);
-            background: var(--light-blue);
+            color: #ffffff;
+            background: var(--gradient-brand);
             padding: 4px 10px;
             border-radius: 20px;
+            white-space: nowrap;
         }
         .tasklist-add-row {
             display: flex;
@@ -700,7 +825,7 @@
         .tasklist-add-row input {
             flex: 1;
             padding: 10px 12px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
             border-radius: var(--radius-sm);
             background: var(--input-bg);
             color: var(--text-color);
@@ -708,7 +833,7 @@
             font-size: 0.95rem;
         }
         .btn-add-task {
-            background-color: var(--success);
+            background: var(--gradient-brand);
             color: white;
             border: none;
             padding: 10px 16px;
@@ -717,8 +842,9 @@
             font-weight: bold;
             font-family: inherit;
             white-space: nowrap;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .btn-add-task:hover { opacity: 0.9; }
+        .btn-add-task:hover { transform: translateY(-1px); box-shadow: 0 6px 14px var(--shadow-strong); }
         .tasklist-items {
             list-style: none;
             margin: 0;
@@ -726,16 +852,22 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+            max-height: 46vh;
+            overflow-y: auto;
         }
         .tasklist-item {
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 10px 12px;
-            border: 1px solid var(--row-border);
+            border: 1px solid var(--glass-border);
             border-radius: var(--radius-sm);
-            background: var(--bg-color);
+            background: rgba(255,255,255,0.35);
+            transition: background 0.2s ease;
         }
+        [data-theme="dark"] .tasklist-item { background: rgba(255,255,255,0.05); }
+        .tasklist-item:hover { background: rgba(255,255,255,0.55); }
+        [data-theme="dark"] .tasklist-item:hover { background: rgba(255,255,255,0.09); }
         .tasklist-item input[type="checkbox"] {
             width: 18px;
             height: 18px;
@@ -763,7 +895,7 @@
 
         /* Responsive tweaks for mobile */
         @media (max-width: 640px) {
-            body { padding: 10px; }
+            body { padding: 10px; padding-bottom: 76px; }
             h1 { font-size: 1.4rem; }
             .theme-toggle-btn { width: 38px; height: 38px; }
             .tab-btn { padding: 10px 16px; font-size: 0.9rem; flex: 1 1 auto; }
@@ -785,6 +917,48 @@
             th, td { padding: 8px 6px; }
             .note-cell { max-width: 90px; }
             .history-header { flex-direction: column; align-items: flex-start; }
+
+            /* Tasklist dock becomes a bottom sheet on small screens */
+            .tasklist-dock {
+                top: auto;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                transform: none;
+                width: 100%;
+                max-height: none;
+                height: 54px;
+                flex-direction: column;
+                border-radius: 18px 18px 0 0;
+                border: 1px solid var(--glass-border);
+                border-bottom: none;
+                box-shadow: 0 -10px 30px var(--shadow-strong);
+            }
+            .tasklist-dock:hover,
+            .tasklist-dock.pinned {
+                width: 100%;
+                height: min(68vh, 520px);
+                box-shadow: 0 -14px 38px var(--shadow-strong);
+            }
+            .tasklist-handle {
+                width: 100%;
+                height: 54px;
+                flex-direction: row;
+                writing-mode: horizontal-tb;
+                padding: 0 18px;
+                justify-content: center;
+            }
+            .tasklist-handle .handle-icon { writing-mode: horizontal-tb; }
+            .tasklist-panel {
+                min-width: 0;
+                padding: 4px 18px 18px;
+                transform: translateY(6px);
+            }
+            .tasklist-dock:hover .tasklist-panel,
+            .tasklist-dock.pinned .tasklist-panel {
+                transform: translateY(0);
+            }
+            .tasklist-items { max-height: 34vh; }
         }
     </style>
 </head>
@@ -793,13 +967,19 @@
 <div class="container">
     <header>
         <div class="brand">
-            <svg class="logo" width="40" height="40" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Study Tracker Pro logo">
-                <circle cx="24" cy="24" r="22" fill="var(--primary)"/>
-                <path d="M24 12 a12 12 0 1 1 -8.49 3.51" fill="none" stroke="var(--bg-color)" stroke-width="3.4" stroke-linecap="round"/>
-                <polygon points="24,3 27.5,10.5 19.8,10" fill="var(--bg-color)"/>
-                <circle cx="24" cy="24" r="2.4" fill="var(--bg-color)"/>
-                <line x1="24" y1="24" x2="24" y2="15.5" stroke="var(--bg-color)" stroke-width="2.4" stroke-linecap="round"/>
-                <line x1="24" y1="24" x2="29.5" y2="26.5" stroke="var(--bg-color)" stroke-width="2.4" stroke-linecap="round"/>
+            <svg class="logo" width="46" height="46" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Study Tracker Pro logo">
+                <defs>
+                    <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#7c5cff"/>
+                        <stop offset="100%" stop-color="#17c3b2"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="24" cy="24" r="22" fill="url(#logoGrad)"/>
+                <path d="M24 12 a12 12 0 1 1 -8.49 3.51" fill="none" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round"/>
+                <polygon points="24,3 27.5,10.5 19.8,10" fill="#ffffff"/>
+                <circle cx="24" cy="24" r="2.4" fill="#ffffff"/>
+                <line x1="24" y1="24" x2="24" y2="15.5" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+                <line x1="24" y1="24" x2="29.5" y2="26.5" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
             </svg>
             <h1>Study Tracker Pro</h1>
         </div>
@@ -821,6 +1001,7 @@
             <div class="info-box">Total days left<span id="days-left">0</span></div>
             <div class="info-box">Effective study days<span id="study-days-left">0</span></div>
             <div class="info-box">Avg. efficiency<span id="avg-efficiency">0%</span></div>
+            <div class="info-box">Total study time<span id="total-study-time">0h 0m</span></div>
         </div>
 
         <div class="timer-card">
@@ -886,20 +1067,28 @@
                 <button class="timer-btn btn-pause" id="btn-pause-toggle" onclick="togglePause()" style="display:none;">☕ Break</button>
                 <button class="timer-btn btn-edit" id="btn-timer-edit" onclick="toggleEditMode()">✏️ Edit</button>
                 <button class="timer-btn btn-reset-timer" onclick="resetTimer()">Reset Timer</button>
+                <button class="timer-btn btn-float" onclick="openFloatingWidget()" title="Open a small always-on-top timer window">🪟 Float Widget</button>
             </div>
         </div>
 
-        <div class="tasklist-card">
-            <div class="tasklist-header">
-                <h2>📝 Today's Tasklist <span class="tasklist-subtitle">(resets every day)</span></h2>
-                <span class="tasklist-progress" id="tasklist-progress">0/0 done</span>
+        <div class="tasklist-dock" id="tasklist-dock">
+            <div class="tasklist-handle" id="tasklist-handle" onclick="toggleTasklistDock(event)">
+                <span class="handle-icon">📝</span>
+                <span>Tasklist</span>
+                <span class="handle-badge" id="tasklist-handle-badge">0/0</span>
             </div>
-            <div class="tasklist-add-row">
-                <input type="text" id="new-task-input" placeholder="Add a task for today..." onkeydown="if(event.key==='Enter'){addTask();}">
-                <button class="btn-add-task" onclick="addTask()">➕ Add</button>
+            <div class="tasklist-panel">
+                <div class="tasklist-header">
+                    <h2>📝 Today's Tasklist <span class="tasklist-subtitle">(resets every day)</span></h2>
+                    <span class="tasklist-progress" id="tasklist-progress">0/0 done</span>
+                </div>
+                <div class="tasklist-add-row">
+                    <input type="text" id="new-task-input" placeholder="Add a task for today..." onkeydown="if(event.key==='Enter'){addTask();}">
+                    <button class="btn-add-task" onclick="addTask()">➕ Add</button>
+                </div>
+                <ul class="tasklist-items" id="tasklist-items"></ul>
+                <div id="tasklist-empty" class="empty-history" style="display:none;">No tasks for today yet. Add one above!</div>
             </div>
-            <ul class="tasklist-items" id="tasklist-items"></ul>
-            <div id="tasklist-empty" class="empty-history" style="display:none;">No tasks for today yet. Add one above!</div>
         </div>
 
         <div class="setup-card">
@@ -1085,6 +1274,7 @@
     let state = JSON.parse(JSON.stringify(defaultState));
     let visualInterval = null;
     let isEditMode = false;
+    let pipWindow = null;
     let currentlyEditingRowIndex = null;
     let pendingLogStudySeconds = 0;
     let pendingLogPauseSeconds = 0;
@@ -1337,6 +1527,7 @@
             totalPause += entry.pauseTime || 0;
         });
         document.getElementById('avg-efficiency').innerText = `${calcEfficiency(totalStudy, totalPause)}%`;
+        document.getElementById('total-study-time').innerText = formatTime(totalStudy);
 
         // Pace reference: how many days have elapsed since the plan started,
         // compared to the total number of planned study days
@@ -1655,6 +1846,7 @@
                 statusLabel.innerText = "☕ On break...";
             }
         }
+        updatePipButtons();
     }
 
     function toggleEditMode() {
@@ -1797,6 +1989,7 @@
         if (pauseEl) pauseEl.innerText = formatHMS(pauseSecs);
         if (totalEl) totalEl.innerText = formatHMS(studySecs + pauseSecs);
         updateEfficiencyGauge('session', calcEfficiency(studySecs, pauseSecs));
+        updatePipDisplay(studySecs, pauseSecs);
     }
 
     function formatTime(totalSeconds) {
@@ -1804,6 +1997,120 @@
         const mins = Math.floor((totalSeconds % 3600) / 60);
         if (hrs === 0 && mins === 0) return `${totalSeconds}s`;
         return `${hrs}h ${mins}m`;
+    }
+
+    /* ================= FLOATING WIDGET (Document Picture-in-Picture) =================
+       Opens a small always-on-top window that floats over every app on the
+       desktop (not just other browser tabs) as long as the browser stays open.
+       Backed by the Document Picture-in-Picture API, supported in Chrome/Edge 116+.
+       The window shares this exact script context, so the Start/Break/End
+       buttons inside it call the very same functions as the main page. */
+    async function openFloatingWidget() {
+        if (pipWindow && !pipWindow.closed) {
+            pipWindow.focus();
+            return;
+        }
+        if (!('documentPictureInPicture' in window)) {
+            alert("Floating widgets need a Chromium-based browser (Chrome, Edge, Opera, Brave) version 116 or newer. Your current browser doesn't support this feature yet.");
+            return;
+        }
+
+        pipWindow = await window.documentPictureInPicture.requestWindow({
+            width: 280,
+            height: 190
+        });
+
+        pipWindow.document.title = "Study Timer";
+        const style = pipWindow.document.createElement('style');
+        style.textContent = `
+            :root { color-scheme: light dark; }
+            * { box-sizing: border-box; }
+            body {
+                margin: 0;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(160deg, #241f47 0%, #120f26 100%);
+                color: #ffffff;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                text-align: center;
+                padding: 10px;
+            }
+            #pip-status { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.75; font-weight: 600; }
+            #pip-time { font-size: 2.1rem; font-weight: bold; font-family: 'Consolas', monospace; letter-spacing: 1px; }
+            #pip-sub { font-size: 0.8rem; opacity: 0.75; }
+            #pip-controls { display: flex; gap: 8px; margin-top: 6px; }
+            #pip-controls button {
+                border: none;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 0.85rem;
+                font-weight: bold;
+                cursor: pointer;
+                font-family: inherit;
+                transition: transform 0.15s ease, filter 0.15s ease;
+            }
+            #pip-controls button:hover { transform: translateY(-1px); filter: brightness(1.1); }
+            #pip-controls button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+            #pip-btn-toggle { background: linear-gradient(135deg, #7c5cff, #17c3b2); color: #fff; }
+            #pip-btn-pause { background: #f5a524; color: #241f47; }
+        `;
+        pipWindow.document.head.appendChild(style);
+
+        pipWindow.document.body.innerHTML = `
+            <div id="pip-status">Session not started</div>
+            <div id="pip-time">00:00:00</div>
+            <div id="pip-sub">Break: 00:00:00</div>
+            <div id="pip-controls">
+                <button id="pip-btn-toggle">Start Session</button>
+                <button id="pip-btn-pause" style="display:none;">☕ Break</button>
+            </div>
+        `;
+
+        pipWindow.document.getElementById('pip-btn-toggle').onclick = () => toggleSession();
+        pipWindow.document.getElementById('pip-btn-pause').onclick = () => togglePause();
+
+        // Clean up the reference if the user closes the floating window
+        pipWindow.addEventListener('pagehide', () => { pipWindow = null; }, { once: true });
+
+        // Prime the widget with the current state right away
+        updatePipButtons();
+        updateAllTimerDisplays();
+    }
+
+    function updatePipDisplay(studySecs, pauseSecs) {
+        if (!pipWindow || pipWindow.closed) return;
+        const timeEl = pipWindow.document.getElementById('pip-time');
+        const subEl = pipWindow.document.getElementById('pip-sub');
+        if (timeEl) timeEl.innerText = formatHMS(studySecs);
+        if (subEl) subEl.innerText = `Break: ${formatHMS(pauseSecs)}`;
+    }
+
+    function updatePipButtons() {
+        if (!pipWindow || pipWindow.closed) return;
+        const statusEl = pipWindow.document.getElementById('pip-status');
+        const toggleBtn = pipWindow.document.getElementById('pip-btn-toggle');
+        const pauseBtn = pipWindow.document.getElementById('pip-btn-pause');
+        if (!statusEl || !toggleBtn || !pauseBtn) return;
+
+        if (state.sessionStartTime === null) {
+            statusEl.innerText = "Session not started";
+            toggleBtn.innerText = "Start Session";
+            pauseBtn.style.display = 'none';
+        } else {
+            toggleBtn.innerText = "End Session";
+            pauseBtn.style.display = 'inline-block';
+            if (state.timerStartTime !== null) {
+                statusEl.innerText = "📚 Studying...";
+                pauseBtn.innerText = "☕ Break";
+            } else {
+                statusEl.innerText = "☕ On break...";
+                pauseBtn.innerText = "▶️ Resume Study";
+            }
+        }
     }
 
     /* AUTOMATIC RECORD SAVE */
@@ -2216,7 +2523,21 @@
 
         const doneCount = tasks.filter(t => t.done).length;
         progressEl.innerText = `${doneCount}/${tasks.length} done`;
+        const badgeEl = document.getElementById('tasklist-handle-badge');
+        if (badgeEl) badgeEl.innerText = `${doneCount}/${tasks.length}`;
     }
+
+    /* Tap/click support for touch devices (dock also opens on hover for pointer devices) */
+    function toggleTasklistDock(event) {
+        event.stopPropagation();
+        document.getElementById('tasklist-dock').classList.toggle('pinned');
+    }
+    document.addEventListener('click', (event) => {
+        const dock = document.getElementById('tasklist-dock');
+        if (dock && dock.classList.contains('pinned') && !dock.contains(event.target)) {
+            dock.classList.remove('pinned');
+        }
+    });
 
     /* FULL RESET */
     function resetData() {

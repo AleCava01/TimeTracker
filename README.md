@@ -36,7 +36,11 @@ A button to wipe all saved data and restore the app to its initial state.
 - **💾 Persistent local storage**
 All data is automatically saved in the browser (localStorage), so everything is still there after you close and reopen the page.
 
+## New features
+
+- **Persistent Widget**
+- **Tasklist**
+
 ## To add
 
 - Consistent text formatting, sizes
-- Logo
