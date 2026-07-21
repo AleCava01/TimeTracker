@@ -44,3 +44,11 @@ All data is automatically saved in the browser (localStorage), so everything is 
 ## To add
 
 - Consistent text formatting, sizes
+- Different palettes in settings
+- New name
+- Widget changing background color when switching from break to studying
+- Eliminate Save Today's Progress button (no more necessary)
+- Possibility to automatically merge sessions of the same day.
+- A session belongs to a day if it starts in that day, no matter if it ends after midnight
+- Light / Dark mode switch on top right corner
+- Climber Animation with as the number of days passes, and reaches the mountain?
